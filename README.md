@@ -10,10 +10,13 @@ You define your server context class with one or more event stream properties in
 
 Create an ASP.Net Web Application and add the following code to the Application_Start of the Global.asax file.
 
+```c#
     RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
+```
 
 Now add the push context class that exposes the observable Rx event stream. 
 
+```c#
     public class MyPushContext {
         public IQbservable<MyMessage> OneSecondTimer {
             get { 
@@ -28,12 +31,14 @@ Now add the push context class that exposes the observable Rx event stream.
             }
         }
     }
+```
 
 Notice that the above Rx event stream is simply a 1 second timer projected into our custom message class. For more ways to easily create Rx event streams (e.g. from standard events) see the examples [here](http://rxwiki.wikidot.com/101samples#toc5 "Rx 101 Samples").
 
 ##Consuming from Javascript
 The above event stream will be exposed over SignalR so a javascript can use the standard SignalR API to listen to events.
 
+```html
     <script type="text/javascript">
         $(function () {
             var connection = $.connection('events/OneSecondTimer/?$filter=(MessageId mod 2) eq 0&$skip=2&$top=5');
@@ -56,12 +61,14 @@ The above event stream will be exposed over SignalR so a javascript can use the 
     <input type="button" id="connect" value="Connect" />
     <input type="button" id="disconnect" value="Disconnect" />
     <ul id="messages"></ul>
+```
 
 Notice that, because Pushqa uses oData's URI syntax, we can filter the event stream to every second event, we can skip the first 2 events after the subscription starts and we will only receive 5 messages.
 
 ##Consuming using the Client Linq API
 Pushqa includes a linq provider to allow the event stream to be filtered using LINQ. Firstly we need to implement our client side EventProvider class.
 
+```c#
     public class MyPushEventProvider : EventProvider {
         public MyPushEventProvider() : base(new Uri("http://localhost/Sample.Web/events")) { }
 
@@ -69,9 +76,11 @@ Pushqa includes a linq provider to allow the event stream to be filtered using L
             get { return CreateQuery<MyMessage>("OneSecondTimer"); }
         }
     }
+```
 
 Then we simply use the EventQuerySource property to construct our query and subscribe.
 
+```c#
     public class MainWindowViewModel {
 
         public MainWindowViewModel() {
@@ -95,6 +104,7 @@ Then we simply use the EventQuerySource property to construct our query and subs
             get { return messages; }
         }
     }
+```
 
 Notice how the standard LINQ query syntax works for filtering while Take and Skip are also implemented. 
 
