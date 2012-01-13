@@ -29,7 +29,7 @@ Now add the push context class that exposes the observable Rx event stream.
         }
     }
 
-Notice that the above Rx event stream is simply a 1 second timer projected into our custom message class. For more ways to easily create Rx event streams (e.g. from standard events) see the examples here.
+Notice that the above Rx event stream is simply a 1 second timer projected into our custom message class. For more ways to easily create Rx event streams (e.g. from standard events) see the examples [here](http://rxwiki.wikidot.com/101samples#toc5 "Rx 101 Samples").
 
 ##Consuming from Javascript
 The above event stream will be exposed over SignalR so a javascript can use the standard SignalR API to listen to events.
@@ -96,6 +96,10 @@ Then we simply use the EventQuerySource property to construct our query and subs
         }
     }
 
-Notice how the standard LINQ query syntax works for filtering while Take and Skip are also implemented. AsObservable created our client side observable event stream and allows us to define further Rx operators that will execute on the client. In this case we monitor the events on the WPF dispatcher, handle errors and push messages onto the Messages collection. Complete is called when the server event stream has ended e.g. when the "Take" count is met.
+Notice how the standard LINQ query syntax works for filtering while Take and Skip are also implemented. 
+
+AsObservable() created our client side observable event stream and allows us to define further Rx operators that will execute on the client. In this case we monitor the events on the WPF dispatcher, handle errors and push messages onto the Messages collection. 
+
+Complete is called when the server event stream has ended e.g. when the "Take" count is met.
 
 &copy;Peter Goodman
