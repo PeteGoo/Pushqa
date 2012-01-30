@@ -1,14 +1,16 @@
 #Pushqa
 
 ##Overview
-Pushqa is a .Net library that allows the filtering of incoming push events from a server to be performed server-side. It remotes client defined queries over event streams so that events that are being emitted server side can be filtered and constrained by client side code. The queries are serialized and executed server side rather than sending all the events to the client for client side filtering.
+Pushqa is a .Net library that allows the filtering of incoming push events from a server to be performed server-side.
 
-Pushqa uses Microsoft's Reactive Extensions (Rx) expressions over an HTTP connection using the oData URI specification. The current transport pipeline supported is SignalR though more pipelines may be added in the future. By default, messages are serialized using JSON. The message service is hosted in an ASP.Net Web project running in IIS.
+It allow the consumer to define queries over event streams so that events that are being emitted server side can be filtered and constrained by client side code. The queries are serialized and executed server side rather than sending all the events to the client for client side filtering.
+
+Pushqa uses Microsoft's Reactive Extensions (Rx) expressions over an HTTP connection with the queries serialized using the oData URI specification. The current transport pipeline supported is SignalR though more pipelines may be added in the future. By default, messages are serialized using JSON. The message service is hosted in an ASP.Net Web project running in IIS.
 
 ##Implementing a queryable event stream
-You define your server context class with one or more event stream properties in terms of an Rx IQbservable.
+Server side implementation is easy, we only need to define our server context class with one or more event stream properties in terms of an Rx IQbservable.
 
-Create an ASP.Net Web Application and add the following code to the Application_Start of the Global.asax file.
+First though, lets create an ASP.Net Web Application and add the following code to the Application_Start of the Global.asax file so that incoming requests to the 'events' path of our app gets redirected to Pushqa.
 
 ```c#
     RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
