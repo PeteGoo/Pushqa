@@ -3,7 +3,7 @@
 ##Overview
 Pushqa is a .Net library that allows the filtering of incoming push events from a server to be performed server-side.
 
-It allow the consumer to define queries over event streams so that events that are being emitted server side can be filtered and constrained by client side code. The queries are serialized and executed server side rather than sending all the events to the client for client side filtering.
+It allows the consumer to define queries over event streams so that events that are being emitted server side can be filtered and constrained by client side code. The queries are serialized and executed server side rather than sending all the events to the client for client side filtering.
 
 Pushqa uses Microsoft's Reactive Extensions (Rx) expressions over an HTTP connection with the queries serialized using the oData URI specification. The current transport pipeline supported is SignalR though more pipelines may be added in the future. By default, messages are serialized using JSON. The message service is hosted in an ASP.Net Web project running in IIS.
 
