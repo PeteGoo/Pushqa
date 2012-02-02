@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F63193FA-1190-49F2-9E0F-0C40521FD34A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pushqa.Server</RootNamespace>
+    <AssemblyName>Pushqa.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName />
+    <SccLocalPath />
+    <SccAuxPath />
+    <SccProvider />
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\Pushqa.Server.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reactive">
+      <HintPath>..\..\packages\Rx_Experimental-Main.1.1.11111\lib\Net4\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Providers">
+      <HintPath>..\..\packages\Rx_Experimental-Providers.1.1.11111\lib\Net4\System.Reactive.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Linq2Rest\IModelFilter.cs" />
+    <Compile Include="Linq2Rest\LinqExtensions.cs" />
+    <Compile Include="Linq2Rest\MethodProvider.cs" />
+    <Compile Include="Linq2Rest\ModelFilter.cs" />
+    <Compile Include="Linq2Rest\ModelFilterExtensions.cs" />
+    <Compile Include="Linq2Rest\Parser\ExpressionTokenizer.cs" />
+    <Compile Include="Linq2Rest\Parser\FilterExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\FunctionTokenSet.cs" />
+    <Compile Include="Linq2Rest\Parser\IFilterExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\IParameterParser.cs" />
+    <Compile Include="Linq2Rest\Parser\ISelectExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\ISortExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\ParameterParser.cs" />
+    <Compile Include="Linq2Rest\Parser\SelectExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\SortDescription.cs" />
+    <Compile Include="Linq2Rest\Parser\SortExpressionFactory.cs" />
+    <Compile Include="Linq2Rest\Parser\TokenOperatorExtensions.cs" />
+    <Compile Include="Linq2Rest\Parser\TokenSet.cs" />
+    <Compile Include="Linq2Rest\Provider\ExpressionProcessor.cs" />
+    <Compile Include="Linq2Rest\Provider\IRestClient.cs" />
+    <Compile Include="Linq2Rest\Provider\ISerializer.cs" />
+    <Compile Include="Linq2Rest\Provider\ISerializerFactory.cs" />
+    <Compile Include="Linq2Rest\Provider\MethodCallProcessor.cs" />
+    <Compile Include="Linq2Rest\Provider\ParameterBuilder.cs" />
+    <Compile Include="Linq2Rest\Provider\RestClient.cs" />
+    <Compile Include="Linq2Rest\Provider\RestContext.cs" />
+    <Compile Include="Linq2Rest\Provider\RestQueryable.cs" />
+    <Compile Include="Linq2Rest\Provider\RestQueryProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignalR\QueryablePushService.cs" />
+    <Compile Include="UriQueryDeserializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pushqa\Pushqa.csproj">
+      <Project>{0B90BCEA-122F-4E8B-AC05-0A3A122AAD26}</Project>
+      <Name>Pushqa</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

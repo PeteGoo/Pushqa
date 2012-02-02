@@ -1,0 +1,95 @@
+﻿<Window x:Class="Sample.WPFClient.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:WpfClient="clr-namespace:Sample.WPFClient"
+        Title="MainWindow"
+    Height="350"
+    Width="700">
+    <Window.Resources>
+        <DataTemplate
+            x:Key="MessageDataTemplate">
+            <Grid
+                Margin="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Text="{Binding TimeStamp}" />
+                <TextBlock
+                    Grid.Column="2"
+                    Margin="5,0,0,0"
+                    Text="{Binding Description}"
+                    FontWeight="Bold" />
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Text="{Binding MessageId}"
+                    FontWeight="Bold" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            FontFamily="Segoe WP Light"
+            FontSize="26.667"
+            Text="Incoming Messages" />
+
+        <!-- COOLSTUFF: Laying out complex forms
+
+             When you lay out larger forms, it's often best to try to only use
+             the "top" and "left" field of the Margin, or else you'll end up
+             double-margining things (i.e. setting the Left margin of one
+             control and the Right margin of another) and your form will look
+             inconsistent. If you combine this rule with the "Only use multiples
+             of n" rule, you'll usually end up with a pretty good-looking form.
+        -->
+
+        <Grid
+            Grid.Row="1"
+            Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="*" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- COOLSTUFF: Huh, No ViewModel?
+
+                 You don't always need a ViewModel - if you can get away with
+                 binding directly to the Model (usually if the View is
+                 read-only), this is okay to do.
+            -->
+
+            <ListBox
+                BorderBrush="#FFD8DEE9"
+                WpfClient:SelectorExtenders.IsAutoscroll="true"
+                IsSynchronizedWithCurrentItem="True"
+                ItemTemplate="{StaticResource MessageDataTemplate}"
+                ItemsSource="{Binding Messages}" />
+
+        </Grid>
+    </Grid>
+</Window>
