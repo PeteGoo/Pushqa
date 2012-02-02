@@ -63,6 +63,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Linq2Rest">
+      <HintPath>..\..\packages\Linq2Rest.1.1.0.0\lib\Net40\Linq2Rest.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.4.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -86,34 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Linq2Rest\IModelFilter.cs" />
-    <Compile Include="Linq2Rest\LinqExtensions.cs" />
-    <Compile Include="Linq2Rest\MethodProvider.cs" />
-    <Compile Include="Linq2Rest\ModelFilter.cs" />
-    <Compile Include="Linq2Rest\ModelFilterExtensions.cs" />
-    <Compile Include="Linq2Rest\Parser\ExpressionTokenizer.cs" />
-    <Compile Include="Linq2Rest\Parser\FilterExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\FunctionTokenSet.cs" />
-    <Compile Include="Linq2Rest\Parser\IFilterExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\IParameterParser.cs" />
-    <Compile Include="Linq2Rest\Parser\ISelectExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\ISortExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\ParameterParser.cs" />
-    <Compile Include="Linq2Rest\Parser\SelectExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\SortDescription.cs" />
-    <Compile Include="Linq2Rest\Parser\SortExpressionFactory.cs" />
-    <Compile Include="Linq2Rest\Parser\TokenOperatorExtensions.cs" />
-    <Compile Include="Linq2Rest\Parser\TokenSet.cs" />
-    <Compile Include="Linq2Rest\Provider\ExpressionProcessor.cs" />
-    <Compile Include="Linq2Rest\Provider\IRestClient.cs" />
-    <Compile Include="Linq2Rest\Provider\ISerializer.cs" />
-    <Compile Include="Linq2Rest\Provider\ISerializerFactory.cs" />
-    <Compile Include="Linq2Rest\Provider\MethodCallProcessor.cs" />
-    <Compile Include="Linq2Rest\Provider\ParameterBuilder.cs" />
-    <Compile Include="Linq2Rest\Provider\RestClient.cs" />
-    <Compile Include="Linq2Rest\Provider\RestContext.cs" />
-    <Compile Include="Linq2Rest\Provider\RestQueryable.cs" />
-    <Compile Include="Linq2Rest\Provider\RestQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\QueryablePushService.cs" />
     <Compile Include="UriQueryDeserializer.cs" />
@@ -123,6 +98,9 @@
       <Project>{0B90BCEA-122F-4E8B-AC05-0A3A122AAD26}</Project>
       <Name>Pushqa</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
