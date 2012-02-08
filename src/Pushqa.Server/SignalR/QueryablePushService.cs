@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
@@ -9,6 +10,8 @@ using Newtonsoft.Json;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
 using SignalR;
+using SignalR.Hosting;
+
 
 namespace Pushqa.Server.SignalR {
     /// <summary>
@@ -38,13 +41,16 @@ namespace Pushqa.Server.SignalR {
 
         private static ConcurrentDictionary<string, IDisposable> subscriptions = new ConcurrentDictionary<string, IDisposable>();
 
+
+
         /// <summary>
         /// Called when [connected async].
         /// </summary>
         /// <param name="request">The request.</param>
+        /// <param name="groups">The groups.</param>
         /// <param name="connectionId">The connection id.</param>
         /// <returns></returns>
-        protected override System.Threading.Tasks.Task OnConnectedAsync(global::SignalR.Abstractions.IRequest request, string connectionId) {
+        protected override System.Threading.Tasks.Task OnConnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId) {
             return Task.Factory.StartNew(() => {
                 
                 logger.Log(Logger.LogLevel.Debug, "Request URI {0}", request.Url);

@@ -8,17 +8,38 @@ using System.Web.SessionState;
 using Pushqa.Server.SignalR;
 using SignalR.Hosting.AspNet.Routing;
 using SignalR.Transports;
+using System.Web.Mvc;
+using System.Web.Routing;
+
 
 namespace Sample.Web {
     public class Global : System.Web.HttpApplication {
 
         protected void Application_Start(object sender, EventArgs e) {
-            // Determines how long to wait between long polling connections to consider a connection "dead"
-            TransportHeartBeat.Instance.DisconnectTimeout = TimeSpan.FromSeconds(10);
-
-            // Determines how often to check connection status.
-            TransportHeartBeat.Instance.HeartBeatInterval = TimeSpan.FromSeconds(10);
             RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
+
+            AreaRegistration.RegisterAllAreas();
+            
+
+            RegisterGlobalFilters(GlobalFilters.Filters);
+            RegisterRoutes(RouteTable.Routes);
+            
+        }
+
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
+            filters.Add(new HandleErrorAttribute());
+        }
+
+
+        public static void RegisterRoutes(RouteCollection routes) {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+            );
+
         }
 
         protected void Session_Start(object sender, EventArgs e) {
