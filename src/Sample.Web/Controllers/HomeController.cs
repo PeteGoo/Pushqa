@@ -16,5 +16,13 @@ namespace Sample.Web.Controllers
             return View();
         }
 
+        public ActionResult IntervalWithSkipAndTake() {
+            return View();
+        }
+
+        public ActionResult ProcessInfo() {
+            return View();
+        }
+
     }
 }

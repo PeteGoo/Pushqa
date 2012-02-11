@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Pushqa Samples: Process Information Viewer";
+}
+
+<h2>Pushqa Samples: Process Information Viewer</h2>
+
+<div>@Html.ActionLink("Samples Home", "Index")</div>
+
+<p>This sample will listen to an Interval timer which pushes the list of processes running on the server, their CPU Time and WorkingSet, every 1 second. Checking the checkbox will filter to only those that are using any CPU Time.</p>
+<p>Uri (unfiltered): http://myserver/myapp/events/ProcessInformation/</p>
+<p>Uri (filtered):   http://myserver/myapp/events/ProcessInformation/?$filter=(CpuTime gt 0)</p>
+
+<div>
+    <script type="text/javascript">
+        $(function () {
+            // This is our default connection
+            var connection = $.connection('../events/ProcessInformation/');
+
+            // Setup the message handler
+            subscribeToConnection(connection);
+            
+            connection.start();
+
+            // Change the filter when the checkbox is clicked
+            $('#cpuFilter').click(function () {
+                var cpuFilterCheck = $(this);
+                connection.stop();
+                $('#messages').empty();
+                if (cpuFilterCheck.is(':checked')) {
+                    // Pass the oData URI equivalent of CpuTime > 0 to filter only processes that are using CPU
+                    connection = $.connection('../events/ProcessInformation/', { $filter: "(CpuTime gt 0)" });
+                }
+                else {
+                    connection = $.connection('../events/ProcessInformation/');
+                }
+                // Setup the message handler on our new connection
+                subscribeToConnection(connection);
+                
+                connection.start();
+            });
+        });
+
+        function subscribeToConnection(connection) {
+            connection.received(function (data) {
+                data = jQuery.parseJSON(data);
+                if (data == null || data.Name == null) {
+                    return;
+                }
+                if (data == 'Pushqa:StreamComplete') {
+                    connection.stop();
+                    $('#messages').empty();
+                    $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
+                }
+                else {
+                    if ($('#Complete').length != 0) {
+                        $('#messages').empty();
+                    }
+                    var idString = data.ProcessId + data.Name.replace(/#/g, '_').replace(/\+/g, '_').replace(/\./g, '_');
+                    if ($('#' + idString).length != 0) {
+                        $('#' + idString).empty();
+                    }
+                    else {
+                        $('#messages').append('<tr id="' + idString + '"></tr>');
+                    }
+                    $('#' + idString).append('<td>' + data.ProcessId + '<input type="hidden" name="' + idString + 'updatedTime" value="' + new Date().getTime() + '"/></td><td>' + data.Name + '</td><td>' + data.CpuTime + '</td><td>' + data.WorkingSet + '</td>');
+                }
+
+                $('input[name*="updatedTime"]').each(function () {
+                    // Drop processes from the list if they have not been updated in that last 4 seconds
+                    if ($(this).val() < new Date().getTime() - 4000) {
+                        $('#' + $(this).attr("name").replace('updatedTime', '')).remove();
+                    }
+                });
+            });
+        }
+    </script>
+
+    <div>
+        <input id="cpuFilter" type="checkbox"/> &gt; 0 CPU Time
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Process ID</th>
+                <th>Process Name</th>
+                <th>% CPU Time</th>
+                <th>Working Set (bytes)</th>
+            </tr>
+        </thead>
+        <tbody id="messages"></tbody>
+    </table>
+</div>

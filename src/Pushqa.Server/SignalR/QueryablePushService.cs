@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
 using SignalR;
@@ -50,7 +48,7 @@ namespace Pushqa.Server.SignalR {
         /// <param name="groups">The groups.</param>
         /// <param name="connectionId">The connection id.</param>
         /// <returns></returns>
-        protected override System.Threading.Tasks.Task OnConnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId) {
+        protected override Task OnConnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId) {
             return Task.Factory.StartNew(() => {
                 
                 logger.Log(Logger.LogLevel.Debug, "Request URI {0}", request.Url);
@@ -58,7 +56,7 @@ namespace Pushqa.Server.SignalR {
                 if (subscriptions.ContainsKey(connectionId) && subscriptions.TryGetValue(connectionId, out currentSubscription)) {
                     return;
                 }
-                if (request == null || request.Url == null) {
+                if (request.Url == null) {
                     return;
                 }
                 string resourceName = queryDeserializer.GetResourceName(new Uri(request.Url.ToString().Replace("/connect", ""))); 
@@ -75,7 +73,7 @@ namespace Pushqa.Server.SignalR {
                     throw new NotImplementedException("Need exception type");
                 }
 
-                IQbservable qbservable = queryDeserializer.Deserialize(propertyInfo.GetValue(this.context, null) as IQbservable, messageType, request.Url);
+                IQbservable qbservable = queryDeserializer.Deserialize(propertyInfo.GetValue(context, null) as IQbservable, messageType, request.Url);
 
                 Func<IQbservable<int>, string, IDisposable> dummyCreateSubscription = CreateSubscription;
 
@@ -121,7 +119,7 @@ namespace Pushqa.Server.SignalR {
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <returns></returns>
-        protected override System.Threading.Tasks.Task OnDisconnectAsync(string clientId) {
+        protected override Task OnDisconnectAsync(string clientId) {
             IDisposable success;
             subscriptions.TryRemove(clientId, out success);
             logger.Log(Logger.LogLevel.Debug, string.Format("Client {0} has disconnected from server. Number of remaining connected clients {1}", clientId, subscriptions.Count));
