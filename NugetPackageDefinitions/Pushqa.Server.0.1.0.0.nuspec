@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>0.1.0.0</version>
+    <authors>Peter Goodman</authors>
+    <owners>Peter Goodman</owners>
+    <licenseUrl>https://github.com/PeteGoo/Pushqa/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>http://blog.petegoo.com</projectUrl>
+    <dependencies>
+      <dependency id="Rx-Main" version="1.0.11226" />
+      <dependency id="SignalR" version="0.4.0" />
+      <dependency id="SignalR.Hosting.Asp.Net" version="0.4.0" />
+      <dependency id="Linq2Rest" version="2.0.0.0" />
+      <dependency id="Newtonsoft.Json" version="4.0.7" />
+    </dependencies>
+    <id>Pushqa.Server</id>
+    <title>Pushqa.Server</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The server side component for Pushqa - providing queryable event streams over HTTP using Reactive Extensions, OData and SignalR</description>
+    <summary>Queryable Http Event Streams</summary>
+    <copyright>Peter Goodman 2012</copyright>
+    <language />
+    <tags>Rx, OData, SignalR, Push, Messaging</tags>
+  </metadata>
+  <files>
+    <file src="..\src\Pushqa.Server\bin\Release\Pushqa.Server.dll" target="lib\Pushqa.Server.dll" />
+  </files>
+</package>
