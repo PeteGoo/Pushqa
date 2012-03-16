@@ -24,5 +24,8 @@ namespace Sample.Web.Controllers
             return View();
         }
 
+        public ActionResult StockTicker() {
+            return View();
+        }
     }
 }

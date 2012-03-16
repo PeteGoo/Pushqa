@@ -13,7 +13,8 @@
     <script type="text/javascript">
         $(function () {
 //            var connection = $.connection('events/ProcessInformation/');
-             var connection = $.connection('events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            //             var connection = $.connection('events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            var connection = $.connection('events/Stocks/', { $filter: "Name eq 'MSFT'"});
             //            var connection = $.connection('events/TraceMessages/', { $filter: "substringof('aspx.page', Message) eq true" });
 
             connection.received(function (data) {

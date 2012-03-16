@@ -5,12 +5,13 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body {
     background-color: #5c87b2;
-    font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    font-size: 16px;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     color: #ffffff;
 }
+
 
 a:link {
     color: #FFFFFF;
@@ -323,3 +324,20 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+
+
+#stockTable table {
+    border-collapse: collapse;
+}
+
+    #stockTable table th, #stockTable table td {
+        padding: 2px 6px;
+    }
+
+    #stockTable table td {
+        text-align: right;
+        width: 75px
+    }
+
+.StockOption{}

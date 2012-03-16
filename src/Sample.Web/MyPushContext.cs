@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reactive.Linq;
+using System.Web;
 using Sample.Common;
 using Sample.Web.Tracing;
 
@@ -29,6 +32,30 @@ namespace Sample.Web {
                        select processInfo).AsQbservable();
             }
 
+        }
+
+        private IEnumerable<IGrouping<DateTime, Stock>> stocks;
+
+        public IQbservable<Stock> Stocks {
+            get {
+                if(stocks == null) {
+                    
+                    stocks = (from line in new StreamReader(typeof(MyPushContext).Assembly.GetManifestResourceStream("Sample.Web.AMZN_AAPL_GOOG_MSFT.txt")).ReadToEnd().Split(new string[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+                             let parts = line.Split(',')
+                             select new Stock {
+                                 Date = DateTime.ParseExact(parts.First(), "yyyyMMdd", CultureInfo.InvariantCulture).Date,
+                                 Name = parts.ElementAt(1),
+                                 Open = decimal.Parse(parts.ElementAt(2)),
+                                 High = decimal.Parse(parts.ElementAt(3)),
+                                 Low = decimal.Parse(parts.ElementAt(4)),
+                                 Close = decimal.Parse(parts.ElementAt(5)),
+                                 Volume = int.Parse(parts.ElementAt(6))
+                             }).GroupBy(stock => stock.Date).OrderBy(group => group.Key).ToArray();
+                }
+                return (from i in Observable.Interval(TimeSpan.FromSeconds(1)).TakeWhile(j => j < stocks.Count())
+                        from dateStock in stocks.ElementAt((int) i)
+                        select dateStock).AsQbservable();
+            }
         }
 
         private IEnumerable<ProcessInfo> GetProcessInformation() {

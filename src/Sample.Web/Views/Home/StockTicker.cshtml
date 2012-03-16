@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Pushqa Samples: Stock Ticker";
+}
+
+<h2>Pushqa Samples: Stock Ticker</h2>
+
+<div>@Html.ActionLink("Samples Home", "Index")</div>
+
+<p>This sample will listen to an Interval timer which pushes a list of stocks from history, each 1 second feed is a single day in history. The feed will stop when the history data is finished</p>
+<p>Use the check boxes to choose a filter and see the resulting url for the pushqa event feed below. Notice that no checkboxes will be no filter. As it is not a live feed, the stream will be restarted each time a filter is changed</p>
+<p>Uri : http://myserver/myapp/events/Stocks/<span id="currentUrl"/></p>
+
+<div>
+    <script type="text/javascript">
+        $(function () {
+            // This is our default connection
+            var connection = $.connection('../events/Stocks/');
+            getConnectionFilter(connection);
+            
+            // Setup the message handler
+            subscribeToConnection(connection);
+
+            connection.start();
+
+
+            $('.StockOption').click(function () {
+                $('#messages').empty();
+                connection.stop();
+                getConnectionFilter(connection);
+                connection.start();
+            });
+
+        });
+
+        function getConnectionFilter(connection) {
+            // Figure out the filter parameters from the checked boxes
+            
+            var stockFilters = $(":checked").map(function () {
+                return '(Name eq \'' + $(this).val() + '\')';
+            }).get();
+            
+            
+            if (stockFilters.length == 0) {
+                connection.qs = null;
+                $("#currentUrl").html('');
+                return;
+            }
+
+            var filter = stockFilters.join(' or ')
+            connection.qs = { $filter:  filter};
+            $("#currentUrl").html('$filter=' + filter);
+        }
+
+
+        function subscribeToConnection(connection) {
+
+            connection.received(function (data) {
+                data = jQuery.parseJSON(data);
+                if (data == null || data.Length == 0) {
+                    return;
+                }
+                if (data == 'Pushqa:StreamComplete') {
+                    connection.stop();
+                    $('#messages').empty();
+                    $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
+                }
+                else {
+                    
+                    var re = /-?\d+/;
+                    var m = re.exec(data.Date);
+                    var d = new Date(parseInt(m[0]));
+                    $('#stockDate').html(d.toDateString());
+                    
+                    var stock = data;
+                    var content = '<td>' + stock.Name + '</td><td>' + stock.Open + '</td><td>' + stock.High + '</td><td>' + stock.Low + '</td><td>' + stock.Close + '</td><td>' + stock.Volume + '</td>';
+                    if ($('#' + stock.Name).length > 0) {
+                        $('#' + stock.Name).empty();
+                        $('#' + stock.Name).append(content);
+                    }
+                    else {
+                        $('#messages').append('<tr id="' + stock.Name + '">' + content + '</tr>');
+                    }
+                        
+                    
+                }
+            });
+        }
+    </script>
+
+    <div id="stocks">
+        <ul>
+            <li><input type="checkbox" value="AMZN" checked="checked" class="StockOption" id="AMZNOption"/>AMZN</li>
+            <li><input type="checkbox" value="AAPL" checked="checked" class="StockOption" id="AAPLOption"/>AAPL</li>
+            <li><input type="checkbox" value="GOOG" checked="checked" class="StockOption" id="GOOGOption"/>GOOG</li>
+            <li><input type="checkbox" value="MSFT" checked="checked" class="StockOption" id="MSFTOption"/>MSFT</li>
+        </ul>
+    </div>
+    <div id="stockDate"></div>
+    <div id="stockTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>Stock</th>
+                    <th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                </tr>
+            </thead>
+            <tbody id="messages"></tbody>
+        </table>
+    </div>
+</div>
