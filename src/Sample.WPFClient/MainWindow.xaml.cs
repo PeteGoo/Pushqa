@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Sample.WPFClient.ViewModels;
 
 namespace Sample.WPFClient {
     /// <summary>
@@ -19,7 +20,7 @@ namespace Sample.WPFClient {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainViewModel();
         }
     }
 }

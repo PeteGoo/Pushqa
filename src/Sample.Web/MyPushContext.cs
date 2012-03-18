@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using System.Web;
 using Sample.Common;
 using Sample.Web.Tracing;
+using ProcessInfo = Sample.Common.ProcessInfo;
 
 namespace Sample.Web {
     public class MyPushContext {

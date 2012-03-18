@@ -45,7 +45,7 @@ namespace Pushqa.SignalR {
         public IObservable<TResult> GetEventStream<TSource, TResult>(EventQuery<TSource, TResult> query) {
             Uri uri = uriProvider.GetQueryUri(query);
             logger.Log(Logger.LogLevel.Debug, "Opening connection");
-            Connection connection = new Connection(uri.GetComponents(UriComponents.Scheme | UriComponents.HostAndPort | UriComponents.Path, UriFormat.SafeUnescaped), uri.Query.Trim('?').Split('&').Select(pair => new KeyValuePair<string, string>(pair.Substring(0, pair.IndexOf('=')), pair.Substring(pair.IndexOf('=') + 1))).ToDictionary(x => x.Key, x => x.Value));
+            Connection connection = new Connection(uri.GetComponents(UriComponents.Scheme | UriComponents.HostAndPort | UriComponents.Path, UriFormat.SafeUnescaped), uri.Query.Trim('?').Split('&').Where(x => !string.IsNullOrWhiteSpace(x)).Select(pair => new KeyValuePair<string, string>(pair.Substring(0, pair.IndexOf('=')), pair.Substring(pair.IndexOf('=') + 1))).ToDictionary(x => x.Key, x => x.Value));
             connection.Start();
 
             connection.Closed += () => logger.Log(Logger.LogLevel.Debug, string.Format("Connection {0} closed", connection.ConnectionId));

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -66,12 +67,31 @@ namespace Pushqa.Linq {
                 case ExpressionType.And:
                 case ExpressionType.AndAlso: {
                     var be = (BinaryExpression)expression;
-                    return format(string.Format(CultureInfo.InvariantCulture, "({0}) and ({1})", VisitFilter(be.Left, parameter, true, false), VisitFilter(be.Right, parameter, false, false)));
+                    string left = VisitFilter(be.Left, parameter, true, false);
+                    string right = VisitFilter(be.Right, parameter, false, false);
+                    if (right == "false" || left == "false") {
+                        return string.Empty;
+                    }
+                    if (left == "true" || string.IsNullOrWhiteSpace(left)) {
+                        return right;
+                    }
+                    if (right == "true" || string.IsNullOrWhiteSpace(right)) {
+                        return left;
+                    }
+                    return format(string.Format(CultureInfo.InvariantCulture, "({0}) and ({1})", left, right));
                 }
                 case ExpressionType.Or:
                 case ExpressionType.OrElse: {
                     var be = (BinaryExpression)expression;
-                    return format(string.Format(CultureInfo.InvariantCulture, "({0}) or ({1})", VisitFilter(be.Left, parameter, true, false), VisitFilter(be.Right, parameter, false, false)));
+                    string left = VisitFilter(be.Left, parameter, true, false);
+                    string right = VisitFilter(be.Right, parameter, false, false);
+                    if (string.IsNullOrWhiteSpace(left)) {
+                        return right;
+                    }
+                    if (string.IsNullOrWhiteSpace(right)) {
+                        return left;
+                    }
+                    return format(string.Format(CultureInfo.InvariantCulture, "({0}) or ({1})", left, right));
                 }
                 case ExpressionType.Not: {
                     var ue = (UnaryExpression)expression;
@@ -107,8 +127,10 @@ namespace Pushqa.Linq {
                         return VisitFilterOperand(((UnaryExpression) expression).Operand, parameter, false);
                     }
                     throw new NotImplementedException("cast is not currently supported");
+                case ExpressionType.MemberAccess:
+                    return VisitFilterOperand(expression, parameter, true);
                 default:
-                    throw new InvalidOperationException("Unsupported query expression encountered.");
+                    throw new InvalidOperationException(string.Format("Unsupported query expression encountered - {0}.", expression.NodeType));
             }
         }
 

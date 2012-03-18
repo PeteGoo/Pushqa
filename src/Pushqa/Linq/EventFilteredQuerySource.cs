@@ -1,7 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 using Pushqa;
 using Pushqa.Communication;
+using Pushqa.Infrastructure;
 
 namespace Pushqa.Linq {
     /// <summary>
@@ -23,6 +26,14 @@ namespace Pushqa.Linq {
             source = eventQuerySource;
             this.filter = filter;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventFilteredQuerySource&lt;TSource&gt;"/> class.
+        /// </summary>
+        /// <param name="eventQuerySource">The event query source.</param>
+        /// <param name="filter">The filter.</param>
+        public EventFilteredQuerySource(EventFilteredQuerySource<TSource> eventQuerySource, Expression<Func<TSource, bool>> filter)
+            : this(eventQuerySource.source, filter, eventQuerySource.skip, eventQuerySource.top) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventFilteredQuerySource&lt;TSource&gt;"/> class.
@@ -83,5 +94,23 @@ namespace Pushqa.Linq {
         IObservable<TSource> IEventQuery<TSource>.AsObservable(IEventProviderPipeline eventProviderPipeline) {
             return ((IEventQuery<TSource>)new EventProjectedQuery<TSource, TSource>(source, filter, null, skip, top)).AsObservable(eventProviderPipeline);
         }
+
+        /// <summary>
+        /// Applies a filter to the query.
+        /// </summary>
+        /// <param name="filter">Filter predicate.</param>
+        /// <returns>Representation of the query with a filter applied.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public EventFilteredQuerySource<TSource> Where([NotNull]Expression<Func<TSource, bool>> filter) {
+            VerifyArgument.IsNotNull("filter", filter);
+
+            filter = ParameterUpdater.UpdateParameter(filter, this.filter.Parameters[0]);
+            var body = Expression.AndAlso(this.filter.Body, filter.Body);
+            var lambda = Expression.Lambda<Func<TSource,bool>>(body, this.filter.Parameters[0]);
+
+            return new EventFilteredQuerySource<TSource>(this, lambda);
+
+        }
+
     }
 }

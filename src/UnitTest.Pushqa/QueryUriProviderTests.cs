@@ -12,7 +12,7 @@ namespace UnitTest.Pushqa {
     /// </summary>
     [TestClass]
     public class QueryUriProviderTests {
-        public QueryUriProviderTests() {}
+        public QueryUriProviderTests() { }
 
         private string uriBaseAddress = "http://www.foo.com/events/";
 
@@ -112,6 +112,19 @@ namespace UnitTest.Pushqa {
         }
 
         [TestMethod]
+        public void ComposedWhereClausesProduceLogicalAnds() {
+            Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => {
+                var temp =
+                    source.Where(
+                        x => x.MessageId > 1);
+                return
+                    temp.Where(
+                        x => x.MessageId < 5);
+            };
+            Assert.AreEqual("?$filter=(MessageId gt 1) and (MessageId lt 5)", GetQueryString(query));
+        }
+
+        [TestMethod]
         public void LogicalOrProducesCorrectQuerySyntax() {
             Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => from ev in source where ev.MessageId < 1 || ev.MessageId > 5 select ev;
             Assert.AreEqual("?$filter=(MessageId lt 1) or (MessageId gt 5)", GetQueryString(query));
@@ -177,6 +190,32 @@ namespace UnitTest.Pushqa {
             Assert.AreEqual("?$filter=startswith(ComplexProperty/Foo, 'fo') eq true", GetQueryString(query));
         }
 
+        [TestMethod]
+        public void BooleanPropertyReferenceAloneConstitutesExpression() {
+            Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => from ev in source where ev.BooleanValue select ev;
+            Assert.AreEqual("?$filter=BooleanValue", GetQueryString(query));
+        }
+
+        [TestMethod]
+        public void BooleanPropertyOnComplexNavigationPropertyReferenceAloneConstitutesExpression() {
+            Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => from ev in source where ev.ComplexProperty.BooleanValue select ev;
+            Assert.AreEqual("?$filter=ComplexProperty/BooleanValue", GetQueryString(query));
+        }
+
+        [TestMethod]
+        public void LocalVariableReferenceInFilterProducesLiteralInQueryString() {
+            string variableReference = "Foo";
+            Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => from ev in source where ev.ComplexProperty.Foo == variableReference select ev;
+            Assert.AreEqual("?$filter=ComplexProperty/Foo eq 'Foo'", GetQueryString(query));
+        }
+
+        [TestMethod]
+        public void LocalVariableReferenceAsBooleanLiteralInFilterProducesLiteralInQueryString() {
+            bool variableReference = true;
+            Func<EventQuerySource<StubMessage>, IEventQuery<StubMessage>> query = source => from ev in source where variableReference  && ev.ComplexProperty.Foo == "Foo" select ev;
+            Assert.AreEqual("?$filter=ComplexProperty/Foo eq 'Foo'", GetQueryString(query));
+        }
+
         [ExpectedException(typeof(InvalidOperationException))]
         [TestMethod]
         public void UnsupportedMethodCallThrowsInvalidOperationException() {
@@ -196,7 +235,7 @@ namespace UnitTest.Pushqa {
         }
 
         public class StubEventProvider : EventProvider {
-            public StubEventProvider(Uri baseUri) : base(baseUri) {}
+            public StubEventProvider(Uri baseUri) : base(baseUri) { }
 
             public EventQuerySource<StubMessage> Messages {
                 get { return CreateQuery<StubMessage>("Messages"); }
@@ -209,7 +248,7 @@ namespace UnitTest.Pushqa {
 
             Expression<Func<StubMessage, bool>> expression2 = message => message.ComplexProperty.Foo + "x" == "";
 
-            Expression<Func<StubMessage, bool>> expression3 = message => message.ComplexProperty.Foo.ToLower()== "";
+            Expression<Func<StubMessage, bool>> expression3 = message => message.ComplexProperty.Foo.ToLower() == "";
 
             Expression<Func<StubMessage, bool>> expression4 = message => message.ComplexProperty.Foo.ToUpper() == "";
         }

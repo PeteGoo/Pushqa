@@ -61,7 +61,7 @@ namespace Pushqa.Linq {
         /// <param name="count">The number of items to observe.</param>
         /// <returns></returns>
         public EventProjectedQuery<TSource, TResult> Take(int count) {
-            return new EventProjectedQuery<TSource, TResult>(source, filter, selector, count, top);
+            return new EventProjectedQuery<TSource, TResult>(source, filter, selector, skip, count);
         }
 
 

@@ -187,7 +187,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MyPushContext.cs" />
-    <Compile Include="ProcessInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleDataService.svc.cs">
       <DependentUpon>SampleDataService.svc</DependentUpon>
