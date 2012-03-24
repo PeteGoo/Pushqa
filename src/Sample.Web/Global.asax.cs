@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Routing;
-using System.Web.Security;
-using System.Web.SessionState;
 using Pushqa.Server.SignalR;
 using SignalR.Hosting.AspNet.Routing;
-using SignalR.Transports;
 using System.Web.Mvc;
-using System.Web.Routing;
 
 
 namespace Sample.Web {

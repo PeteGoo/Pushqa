@@ -25,7 +25,6 @@ namespace Sample.WPFClient.ViewModels {
 
             subscription = (from processInfo in eventProvider.ProcessInformation
                             select processInfo)
-                            .Take(5)
                             .AsObservable()
                             .ObserveOnDispatcher()
                             .Subscribe(message => {

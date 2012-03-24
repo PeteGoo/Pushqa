@@ -100,7 +100,6 @@
     <Compile Include="Infrastructure\VerifyArgument.cs" />
     <Compile Include="Linq\EventFilteredQuerySource.cs" />
     <Compile Include="Linq\EventProjectedQuery.cs" />
-    <Compile Include="Linq\ExpressionRewriter.cs" />
     <Compile Include="Linq\IEventQuery.cs" />
     <Compile Include="Linq\IQueryUriProvider.cs" />
     <Compile Include="Linq\ParameterUpdater.cs" />
