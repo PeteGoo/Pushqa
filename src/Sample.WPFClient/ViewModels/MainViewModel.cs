@@ -9,11 +9,6 @@ namespace Sample.WPFClient.ViewModels {
 
         public MainViewModel() {
             SelectedSample = Samples.First();
-            //var propertyChanges =
-            //    Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-            //        ev => PropertyChanged += ev, ev => PropertyChanged -= ev);
-
-            
         }
 
         public IEnumerable<SampleItem> Samples {
@@ -46,8 +41,10 @@ namespace Sample.WPFClient.ViewModels {
             get { return selectedSample; }
             set {
                 if (selectedSample != value) {
+                    // Stop the previous sample
                     Stop();
                     selectedSample = value;
+                    // Start the current sample
                     Start();
                     NotifyPropertyChanged("SelectedSample");
                 }       

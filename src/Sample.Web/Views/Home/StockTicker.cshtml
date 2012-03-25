@@ -46,7 +46,7 @@
                 return;
             }
 
-            var filter = stockFilters.join(' or ')
+            var filter = stockFilters.join(' or ');
             connection.qs = { $filter:  filter};
             $("#currentUrl").html('$filter=' + filter);
         }
@@ -55,7 +55,7 @@
         function subscribeToConnection(connection) {
 
             connection.received(function (data) {
-                data = jQuery.parseJSON(data);
+                
                 if (data == null || data.Length == 0) {
                     return;
                 }

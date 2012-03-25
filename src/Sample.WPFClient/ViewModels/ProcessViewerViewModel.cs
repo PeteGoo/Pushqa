@@ -26,17 +26,20 @@ namespace Sample.WPFClient.ViewModels {
             subscription = (from processInfo in eventProvider.ProcessInformation
                             select processInfo)
                             .AsObservable()
+                            .OnErrorResumeNext(eventProvider.ProcessInformation.AsObservable())
                             .ObserveOnDispatcher()
                             .Subscribe(message => {
+                                // Update the process if it exists
                                 if (processes.Any(p => p.ProcessId == message.ProcessId)) {
                                     processes.Where(p => p.ProcessId == message.ProcessId).ToList().ForEach(
                                         x => x.Update(message));
                                 }
                                 else {
+                                    // Otherwise add it
                                     processes.Add(message);
                                 }
                             },
-                            () => processes.Clear());
+                            () => processes.Clear()); // Clear the table when complete
 
         }
 

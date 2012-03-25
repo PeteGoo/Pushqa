@@ -9,6 +9,7 @@ namespace Sample.Web {
     public class Global : System.Web.HttpApplication {
 
         protected void Application_Start(object sender, EventArgs e) {
+            // Register the SignalR route for our event context at /events
             RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
 
             AreaRegistration.RegisterAllAreas();

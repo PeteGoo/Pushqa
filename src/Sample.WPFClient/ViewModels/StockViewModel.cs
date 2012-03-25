@@ -3,12 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading;
-using System.Windows.Data;
-using Pushqa;
-using Sample.Common;
 
 namespace Sample.WPFClient.ViewModels {
+    /// <summary>
+    /// Takes a stream of stock change events and at the end of each "day" (which happens every second) and add the day's results to a collection
+    /// </summary>
     public class StockViewModel : ISampleViewModel, INotifyPropertyChanged {
         private IDisposable subscription;
         private readonly ObservableCollection<TradingDayClosingSummary> stocks = new ObservableCollection<TradingDayClosingSummary>();
@@ -16,11 +15,22 @@ namespace Sample.WPFClient.ViewModels {
         private bool showApple = true;
         private bool showGoogle = true;
         private bool showMicrosoft = true;
+        private bool isVisible = false;
 
         public StockViewModel() {
             stocks.Add(new TradingDayClosingSummary() {
                 Date = new DateTime(2009, 8, 20)
             });
+        }
+
+        public bool IsVisible {
+            get { return isVisible; }
+            set {
+                if (isVisible != value) {
+                    isVisible = value;
+                    NotifyPropertyChanged("IsVisible");
+                }
+            }
         }
 
         public bool ShowAmazon {
@@ -74,17 +84,19 @@ namespace Sample.WPFClient.ViewModels {
 
         public void Start() {
             Stop();
-            // Setup the event stream subscription
-            MyPushEventProvider eventProvider = new MyPushEventProvider();
-            int selectedStockCount = 4;
 
-            var stocksEventStream = eventProvider.Stocks.Where(s => 
+            IsVisible = true;
+
+            MyPushEventProvider eventProvider = new MyPushEventProvider();
+            int selectedStockCount = Convert.ToInt32(showAmazon) + Convert.ToInt32(showApple) + Convert.ToInt32(showGoogle) + Convert.ToInt32(showMicrosoft);
+
+            subscription = eventProvider.Stocks.Where(s => 
                 (showAmazon && s.Name == "AMZN") || 
                 (showApple && s.Name == "AAPL") || 
                 (showGoogle && s.Name == "GOOG") || 
                 (showMicrosoft && s.Name == "MSFT"))
                 .AsObservable()
-                .Buffer(selectedStockCount)
+                .Buffer(selectedStockCount) // Wait till we have a value for all stocks for the day and collate them into a list of trading summaries
                 .ObserveOnDispatcher().Subscribe(group => {
                 if (group.Count == 0) {
                     return;
@@ -105,7 +117,9 @@ namespace Sample.WPFClient.ViewModels {
         }
 
         public void Stop() {
+            IsVisible = false;
             stocks.Clear();
+
             stocks.Add(new TradingDayClosingSummary() {
                 Date = new DateTime(2009, 8, 20)
             });

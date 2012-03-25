@@ -42,7 +42,7 @@
 
         function subscribeToConnection(connection) {
             connection.received(function (data) {
-                data = jQuery.parseJSON(data);
+                
                 if (data == null || data.Name == null) {
                     return;
                 }

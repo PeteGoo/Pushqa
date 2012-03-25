@@ -13,6 +13,10 @@ using ProcessInfo = Sample.Common.ProcessInfo;
 
 namespace Sample.Web {
     public class MyPushContext {
+        /// <summary>
+        /// Gets a one second timer that produces a new message each second with an incrementing id and timestamp.
+        /// </summary>
+        /// <value>The one second timer.</value>
         public IQbservable<MyMessage> OneSecondTimer {
             get { 
                 return Observable.Interval(TimeSpan.FromSeconds(1))
@@ -26,6 +30,10 @@ namespace Sample.Web {
             }
         }
 
+        /// <summary>
+        /// Gets the server's process information.
+        /// </summary>
+        /// <value>The process information.</value>
         public IQbservable<ProcessInfo> ProcessInformation {
             get {
                 return (from i in Observable.Interval(TimeSpan.FromSeconds(1))
@@ -37,6 +45,10 @@ namespace Sample.Web {
 
         private IEnumerable<IGrouping<DateTime, Stock>> stocks;
 
+        /// <summary>
+        /// Gets a history of stock prices for AMZN, AAPL, GOOG and MSFT producing a result for consecutive days each second.
+        /// </summary>
+        /// <value>The stocks.</value>
         public IQbservable<Stock> Stocks {
             get {
                 if(stocks == null) {

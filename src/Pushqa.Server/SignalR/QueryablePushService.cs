@@ -97,7 +97,7 @@ namespace Pushqa.Server.SignalR {
             return qbservable.Subscribe(x => {
 
                 try {
-                    Send(clientId, messageSerializer.Serialize(x));
+                    Send(clientId, x);
                 }
                 catch (Exception exception) {
                     // How should we handle send exceptions like serialization etc? Error the stream of ignore the poison message?

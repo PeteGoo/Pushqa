@@ -12,16 +12,17 @@
 <div>
     <script type="text/javascript">
         $(function () {
+            // Setup our connection
             var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
-            //            var connection = $.connection('events/TraceMessages/', { $filter: "substringof('aspx.page', Message) eq true" });
-
+            
+            // Append each message received
             connection.received(function (data) {
                 if (data == 'Pushqa:StreamComplete') {
                     connection.stop();
                     $('#messages').append('<li>Complete</li>');
                 }
                 else {
-                    $('#messages').append('<li>' + data + '</li>');
+                    $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
                 }
             });
 

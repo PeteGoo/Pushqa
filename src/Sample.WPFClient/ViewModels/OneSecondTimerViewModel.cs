@@ -18,14 +18,16 @@ namespace Sample.WPFClient.ViewModels {
             // Setup the event stream subscription
             MyPushEventProvider eventProvider = new MyPushEventProvider();
             subscription = (from myEvent in eventProvider.OneSecondTimer
-                            where myEvent.MessageId % 2 == 0
+                            where myEvent.MessageId % 2 == 0    // Only log every 2nd message
                             select myEvent)
-                            .Take(5)
+                            .Take(5)   // Only take 5 messages in total, then complete
                             .AsObservable()
                             .ObserveOnDispatcher()
                             .Catch<MyMessage, Exception>(e => Observable.Return(new MyMessage { Description = e.Message }))
-                            .Subscribe(message => messages.Add(message),
-                            () => Messages.Add(new MyMessage { Description = "Complete" }));
+                            .Subscribe(
+                                message => messages.Add(message), // Append each new message
+                                () => Messages.Add(new MyMessage { Description = "Complete" }) // Write out "Complete" when there are no more messages
+                            );
         }
 
         public void Stop() {

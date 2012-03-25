@@ -74,9 +74,12 @@
                 VerticalScrollBarVisibility="Auto">
                 <chartingToolkit:Chart
                 Title="Stock Market Closing Prices"
-                
-                    LegendTitle="Data">
+                Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    
+                    LegendTitle="Data"
+                   >
                     <chartingToolkit:Chart.Axes>
+
                         <chartingToolkit:CategoryAxis
                             Orientation="X">
                             <chartingToolkit:CategoryAxis.AxisLabelStyle>
@@ -132,166 +135,12 @@
                     ItemsSource="{Binding Stocks}"
                     IndependentValuePath="DateString"
                     DependentValuePath="Microsoft"
-                    Visibility="{Binding Path=ShowMicrosoft, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    Visibility="{Binding Path=ShowMicrosoft, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
 
                 </chartingToolkit:Chart>
             </ScrollViewer>
-            <!--<chartingToolkit:Chart
-            Title="Stocks"
-            DataContext="{Binding Stocks}"
-            >
-            
-                <chartingToolkit:LineSeries
-                    Name="lineSeries1"
-                    Title="AMZN"
-                    
-                    DependentValuePath="Close"
-                    IndependentValuePath="DateString"
-                    
-                    IsSelectionEnabled="False"
-                    TransitionDuration="0"
-                    Background="Yellow"
-                    >
-                    <chartingToolkit:LineSeries.IndependentAxis>
-                        <chartingToolkit:CategoryAxis
-                            Orientation="X">
-                            <chartingToolkit:CategoryAxis.AxisLabelStyle>
-                                <Style
-                                    TargetType="chartingToolkit:AxisLabel">
-                                    <Setter
-                                        Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate
-                                                TargetType="chartingToolkit:AxisLabel">
-                                                <TextBlock
-                                                    Text="{TemplateBinding FormattedContent}">
-                                                <TextBlock.LayoutTransform>
-                                                    <RotateTransform
-                                                            Angle="-60" />
-                                                </TextBlock.LayoutTransform>
-                                                </TextBlock>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </chartingToolkit:CategoryAxis.AxisLabelStyle>
-                        </chartingToolkit:CategoryAxis>
-                    </chartingToolkit:LineSeries.IndependentAxis>
-
-
-                </chartingToolkit:LineSeries>
-                <chartingToolkit:LineSeries
-                    Name="lineSeries2"
-                    Title="AAPL"
-                    ItemsSource="{Binding AppleStocks}"
-                    DependentValuePath="Close"
-                    IndependentValuePath="DateString"
-                    IsSelectionEnabled="False"
-                    TransitionDuration="0"
-                    Background="Yellow">
-                    <chartingToolkit:LineSeries.IndependentAxis>
-                        <chartingToolkit:CategoryAxis
-                            Orientation="X">
-                            <chartingToolkit:CategoryAxis.AxisLabelStyle>
-                                <Style
-                                    TargetType="chartingToolkit:AxisLabel">
-                                    <Setter
-                                        Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate
-                                                TargetType="chartingToolkit:AxisLabel">
-                                                <TextBlock
-                                                    Text="{TemplateBinding FormattedContent}">
-                                                <TextBlock.LayoutTransform>
-                                                    <RotateTransform
-                                                            Angle="-60" />
-                                                </TextBlock.LayoutTransform>
-                                                </TextBlock>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </chartingToolkit:CategoryAxis.AxisLabelStyle>
-                        </chartingToolkit:CategoryAxis>
-                    </chartingToolkit:LineSeries.IndependentAxis>
-
-
-                </chartingToolkit:LineSeries>
-                <chartingToolkit:LineSeries
-                    Name="lineSeries3"
-                    Title="GOOG"
-                    ItemsSource="{Binding GoogleStocks}"
-                    DependentValuePath="Close"
-                    IndependentValuePath="DateString"
-                    IsSelectionEnabled="False"
-                    TransitionDuration="0"
-                    Background="Yellow">
-                    <chartingToolkit:LineSeries.IndependentAxis>
-                        <chartingToolkit:CategoryAxis
-                            Orientation="X">
-                            <chartingToolkit:CategoryAxis.AxisLabelStyle>
-                                <Style
-                                    TargetType="chartingToolkit:AxisLabel">
-                                    <Setter
-                                        Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate
-                                                TargetType="chartingToolkit:AxisLabel">
-                                                <TextBlock
-                                                    Text="{TemplateBinding FormattedContent}">
-                                                <TextBlock.LayoutTransform>
-                                                    <RotateTransform
-                                                            Angle="-60" />
-                                                </TextBlock.LayoutTransform>
-                                                </TextBlock>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </chartingToolkit:CategoryAxis.AxisLabelStyle>
-                        </chartingToolkit:CategoryAxis>
-                    </chartingToolkit:LineSeries.IndependentAxis>
-
-
-                </chartingToolkit:LineSeries>
-                <chartingToolkit:LineSeries
-                    Name="lineSeries4"
-                    Title="MSFT"
-                    ItemsSource="{Binding MicrosoftStocks}"
-                    DependentValuePath="Close"
-                    IndependentValuePath="DateString"
-                    IsSelectionEnabled="False"
-                    TransitionDuration="0"
-                    Background="Yellow">
-                    <chartingToolkit:LineSeries.IndependentAxis>
-                        <chartingToolkit:CategoryAxis
-                            Orientation="X">
-                            <chartingToolkit:CategoryAxis.AxisLabelStyle>
-                                <Style
-                                    TargetType="chartingToolkit:AxisLabel">
-                                    <Setter
-                                        Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate
-                                                TargetType="chartingToolkit:AxisLabel">
-                                                <TextBlock
-                                                    Text="{TemplateBinding FormattedContent}">
-                                                <TextBlock.LayoutTransform>
-                                                    <RotateTransform
-                                                            Angle="-60" />
-                                                </TextBlock.LayoutTransform>
-                                                </TextBlock>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </chartingToolkit:CategoryAxis.AxisLabelStyle>
-                        </chartingToolkit:CategoryAxis>
-                    </chartingToolkit:LineSeries.IndependentAxis>
-
-
-                </chartingToolkit:LineSeries>
-            </chartingToolkit:Chart>-->
+ 
     </Grid>
 
     </DataTemplate>
