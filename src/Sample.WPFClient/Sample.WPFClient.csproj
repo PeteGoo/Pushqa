@@ -82,6 +82,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Controls\MultiChart.cs" />
     <Compile Include="Controls\WeakEventing\CollectionChangedWeakEventSource.cs" />
     <Compile Include="Controls\WeakEventing\EventWrapperSourceBase.cs" />
