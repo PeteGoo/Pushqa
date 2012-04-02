@@ -41,29 +41,24 @@
         });
 
         function subscribeToConnection(connection) {
-            connection.received(function (data) {
+            connection.asObservable().subscribe(function (data) {
                 
                 if (data == null || data.Name == null) {
                     return;
                 }
-                if (data == 'Pushqa:StreamComplete') {
-                    connection.stop();
+                
+                if ($('#Complete').length != 0) {
                     $('#messages').empty();
-                    $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
+                }
+                var idString = data.ProcessId + data.Name.replace(/#/g, '_').replace(/\+/g, '_').replace(/\./g, '_');
+                if ($('#' + idString).length != 0) {
+                    $('#' + idString).empty();
                 }
                 else {
-                    if ($('#Complete').length != 0) {
-                        $('#messages').empty();
-                    }
-                    var idString = data.ProcessId + data.Name.replace(/#/g, '_').replace(/\+/g, '_').replace(/\./g, '_');
-                    if ($('#' + idString).length != 0) {
-                        $('#' + idString).empty();
-                    }
-                    else {
-                        $('#messages').append('<tr id="' + idString + '"></tr>');
-                    }
-                    $('#' + idString).append('<td>' + data.ProcessId + '<input type="hidden" name="' + idString + 'updatedTime" value="' + new Date().getTime() + '"/></td><td>' + data.Name + '</td><td>' + data.CpuTime + '</td><td>' + data.WorkingSet + '</td>');
+                    $('#messages').append('<tr id="' + idString + '"></tr>');
                 }
+                $('#' + idString).append('<td>' + data.ProcessId + '<input type="hidden" name="' + idString + 'updatedTime" value="' + new Date().getTime() + '"/></td><td>' + data.Name + '</td><td>' + data.CpuTime + '</td><td>' + data.WorkingSet + '</td>');
+                
 
                 $('input[name*="updatedTime"]').each(function () {
                     // Drop processes from the list if they have not been updated in that last 4 seconds
@@ -71,6 +66,12 @@
                         $('#' + $(this).attr("name").replace('updatedTime', '')).remove();
                     }
                 });
+            },
+            function (error) {
+            },
+            function () {
+                $('#messages').empty();
+                $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
             });
         }
     </script>

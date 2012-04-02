@@ -16,15 +16,18 @@
             var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
             
             // Append each message received
-            connection.received(function (data) {
-                if (data == 'Pushqa:StreamComplete') {
+            connection.asObservable().subscribe(
+                function (data) {
+                    $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
+                },
+                function (error) {
+                    $('#messages').append('<li>Error: ' + error + '</li>');
+                },
+                function () {
                     connection.stop();
                     $('#messages').append('<li>Complete</li>');
                 }
-                else {
-                    $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
-                }
-            });
+            );
 
             connection.starting(function () {
                 $('#messages').append("'<li>Starting Connection</li>");
@@ -40,7 +43,6 @@
                 connection.stop();
             });
         });
-
 
     </script>
     <input type="button" id="connect" value="Connect" />

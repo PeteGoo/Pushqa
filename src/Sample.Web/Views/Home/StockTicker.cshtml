@@ -54,35 +54,31 @@
 
         function subscribeToConnection(connection) {
 
-            connection.received(function (data) {
+            connection.asObservable().subscribe(function (data) {
                 
                 if (data == null || data.Length == 0) {
                     return;
                 }
-                if (data == 'Pushqa:StreamComplete') {
-                    connection.stop();
-                    $('#messages').empty();
-                    $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
+                var re = /-?\d+/;
+                var m = re.exec(data.Date);
+                var d = new Date(parseInt(m[0]));
+                $('#stockDate').html(d.toDateString());
+                    
+                var stock = data;
+                var content = '<td>' + stock.Name + '</td><td>' + stock.Open + '</td><td>' + stock.High + '</td><td>' + stock.Low + '</td><td>' + stock.Close + '</td><td>' + stock.Volume + '</td>';
+                if ($('#' + stock.Name).length > 0) {
+                    $('#' + stock.Name).empty();
+                    $('#' + stock.Name).append(content);
                 }
                 else {
-                    
-                    var re = /-?\d+/;
-                    var m = re.exec(data.Date);
-                    var d = new Date(parseInt(m[0]));
-                    $('#stockDate').html(d.toDateString());
-                    
-                    var stock = data;
-                    var content = '<td>' + stock.Name + '</td><td>' + stock.Open + '</td><td>' + stock.High + '</td><td>' + stock.Low + '</td><td>' + stock.Close + '</td><td>' + stock.Volume + '</td>';
-                    if ($('#' + stock.Name).length > 0) {
-                        $('#' + stock.Name).empty();
-                        $('#' + stock.Name).append(content);
-                    }
-                    else {
-                        $('#messages').append('<tr id="' + stock.Name + '">' + content + '</tr>');
-                    }
-                        
-                    
+                    $('#messages').append('<tr id="' + stock.Name + '">' + content + '</tr>');
                 }
+            },
+            function (error) {
+            },
+            function () {
+                $('#messages').empty();
+                $('#messages').append('<tr><td id="Complete">Complete</td></tr>');
             });
         }
     </script>

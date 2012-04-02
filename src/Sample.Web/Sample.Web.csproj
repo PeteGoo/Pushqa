@@ -170,6 +170,9 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\rx-vsdoc.js" />
+    <Content Include="Scripts\rx.min.js" />
+    <Content Include="Scripts\Rx.Pushqa.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
