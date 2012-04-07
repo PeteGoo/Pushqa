@@ -46,7 +46,13 @@ The above event stream will be exposed over SignalR so a javascript can use the 
             var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
 
             connection.received(function (data) {
-                $('#messages').append('<li>' + data + '</li>');
+                if (data.Type == 'Completed') {
+                    connection.stop();
+                    $('#messages').append('<li>Complete</li>');
+                }
+                else {
+                    $('#messages').append('<li>' + data.Message + '</li>');
+                }
             });
 
             connection.start();
