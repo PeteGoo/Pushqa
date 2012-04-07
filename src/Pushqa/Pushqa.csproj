@@ -93,6 +93,7 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Communication\EventWrapper.cs" />
     <Compile Include="Communication\IMessageSerializer.cs" />
     <Compile Include="Communication\JsonMessageSerializer.cs" />
     <Compile Include="EventProvider.cs" />
@@ -113,6 +114,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="PushqaEventSourceException.cs" />
     <Compile Include="SignalR\SignalrQueryPipeline.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pushqa;
-using Pushqa.Server;
-using Pushqa.Communication;
 using Pushqa.Linq;
 
 namespace UnitTest.Pushqa {
@@ -30,7 +28,13 @@ namespace UnitTest.Pushqa {
         }
 
         #endregion
-        
+
+        [TestMethod]
+        public void EmptyEventSourceCompletedImmediately() {
+            IObservable<StubMessage> clientEvents = DoQuery(Observable.Empty<StubMessage>(), source => source.Take(5));
+            Assert.AreEqual(0, clientEvents.ToEnumerable().Count());
+        }
+
         [TestMethod]
         public void EmptyFilterProducesUnfilteredObservable() {
             RunOneToTenTest(s => s, expectedFirst:1, expectedLast:10, expectedCount:10);
@@ -109,21 +113,5 @@ namespace UnitTest.Pushqa {
             return ((IEventQuery<StubMessage>) query(new EventQuerySource<StubMessage>("Messages", new Uri("http://www.foo.com")))).
                 AsObservable(new InMemoryViaUriEventQueryPipeline {Source = source});
         }
-    }
-
-    public class InMemoryViaUriEventQueryPipeline : IEventProviderPipeline {
-
-        public Uri Uri { get; set; }
-
-        public IObservable<TResult> GetEventStream<TSource, TResult>(EventQuery<TSource, TResult> query) {
-            Uri = new QueryUriProvider().GetQueryUri(query);
-
-            UriQueryDeserializer deserializer = new UriQueryDeserializer();
-
-
-            return deserializer.Deserialize(((IObservable<TSource>)Source).AsQbservable(), Uri) as IQbservable<TResult>;
-        }
-
-        public object Source { get; set; }
     }
 }

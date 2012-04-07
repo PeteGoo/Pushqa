@@ -16,12 +16,14 @@
 
     $.signalR.prototype.asObservable = function () {
         this.received(function (data) {
-            if (data == 'Pushqa:StreamComplete') {
+            if (data.Type == 'Completed') {
                 this.subject.onCompleted();
                 this.stop();
             }
-            else {
-                this.subject.onNext(data);
+            else if(data.Type == 'Error') {
+                this.subject.onError(data.ErrorMessage);
+            } else {
+                this.subject.onNext(data.Message);
             }
         });
         return this.subject.asObservable();

@@ -97,16 +97,26 @@ namespace Pushqa.Server.SignalR {
             return qbservable.Subscribe(x => {
 
                 try {
-                    Send(clientId, x);
+                    Send(clientId, new EventWrapper<TItemType> { Message = x, Type = EventWrapper<TItemType>.EventType.Message });
                 }
                 catch (Exception exception) {
                     // How should we handle send exceptions like serialization etc? Error the stream of ignore the poison message?
                     logger.Log(Logger.LogLevel.Error, exception, "Error sending message");
                 }
-            }, () => {
+            },
+            ex => {
+
                 try {
-                    Send(clientId, Pushqa.SignalR.SignalrQueryPipeline.CompleteMessage);
-                    
+                    Send(clientId, new EventWrapper<TItemType> { ErrorMessage = ex.Message, Type = EventWrapper<TItemType>.EventType.Error });
+                }
+                catch (Exception exception) {
+                    // How should we handle send exceptions like serialization etc? Error the stream of ignore the poison message?
+                    logger.Log(Logger.LogLevel.Error, exception, "Error sending message");
+                }
+            }
+            , () => {
+                try {
+                    Send(clientId, new EventWrapper<TItemType> { Type = EventWrapper<TItemType>.EventType.Completed});
                 }
                 catch (Exception exception) {
                     logger.Log(Logger.LogLevel.Error, exception, "Error sending complete message");

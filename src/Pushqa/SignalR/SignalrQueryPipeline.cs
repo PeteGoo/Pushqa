@@ -13,8 +13,7 @@ namespace Pushqa.SignalR {
     /// </summary>
     public class SignalrQueryPipeline : IEventProviderPipeline {
         private static readonly Logger logger = new Logger();
-        internal const string CompleteMessage = "Pushqa:StreamComplete";
-
+        
         private readonly IQueryUriProvider uriProvider;
         private readonly IMessageSerializer messageSerializer;
 
@@ -51,8 +50,14 @@ namespace Pushqa.SignalR {
             connection.Closed += () => logger.Log(Logger.LogLevel.Debug, string.Format("Connection {0} closed", connection.ConnectionId));
 
             return connection.AsObservable()
-                .TakeWhile(message => message != CompleteMessage)
-                .Select(messageSerializer.Deserialize<TResult>)
+                .Select(messageSerializer.Deserialize<EventWrapper<TResult>>)
+                .TakeWhile(message => message.Type != EventWrapper<TResult>.EventType.Completed)
+                .Select(message => {
+                    if (message.Type == EventWrapper<TResult>.EventType.Error) {
+                        throw new PushqaEventSourceException(message.ErrorMessage);
+                    }
+                            return message.Message;
+                        })
                 .Finally(connection.Stop);
         }
     }

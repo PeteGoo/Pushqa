@@ -18,7 +18,7 @@
             //            var connection = $.connection('events/TraceMessages/', { $filter: "substringof('aspx.page', Message) eq true" });
 
             connection.received(function (data) {
-                if (data == 'Pushqa:StreamComplete') {
+                if (data.Type == 'Completed') {
                     connection.stop();
                     $('#messages').append('<li>Complete</li>');
                 }

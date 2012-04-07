@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="EventProviderTests.cs" />
     <Compile Include="EventQuerySourceTests.cs" />
+    <Compile Include="InMemoryViaUriEventQueryPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuerySerializeDeserializeTests.cs" />
     <Compile Include="QueryUriProviderTests.cs" />
