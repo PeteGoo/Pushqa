@@ -67,6 +67,48 @@ The above event stream will be exposed over SignalR so a javascript can use the 
 
 Notice that, because Pushqa uses oData's URI syntax, we can filter the event stream to every second event, we can skip the first 2 events after the subscription starts and we will only receive 5 messages.
 
+Or you can now use Reactive Extensions for Javascript
+
+```html
+    <script type="text/javascript">
+        $(function () {
+            // Setup our connection
+            var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            
+            // Append each message received
+            connection.asObservable().subscribe(
+                function (data) {
+                    // onNext
+                    $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
+                },
+                function (error) {
+                    // onError
+                    $('#messages').append('<li>Error: ' + error + '</li>');
+                },
+                function () {
+                    // onCompleted
+                    connection.stop();
+                    $('#messages').append('<li>Complete</li>');
+                }
+            );
+
+            connection.start();
+
+            $("#connect").click(function () {
+                connection.start();
+            });
+
+            $("#disconnect").click(function () {
+                connection.stop();
+            });
+        });
+
+    </script>
+    <input type="button" id="connect" value="Connect" />
+    <input type="button" id="disconnect" value="Disconnect" />
+    <ul id="messages"></ul>
+```
+
 ##Consuming using the Client Linq API
 Pushqa includes a linq provider to allow the event stream to be filtered using LINQ. Firstly we need to implement our client side EventProvider class.
 
