@@ -43,7 +43,7 @@ The above event stream will be exposed over SignalR so a javascript can use the 
 ```html
     <script type="text/javascript">
         $(function () {
-            var connection = $.connection('events/OneSecondTimer/?$filter=(MessageId mod 2) eq 0&$skip=2&$top=5');
+            var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
 
             connection.received(function (data) {
                 $('#messages').append('<li>' + data + '</li>');
@@ -67,7 +67,7 @@ The above event stream will be exposed over SignalR so a javascript can use the 
 
 Notice that, because Pushqa uses oData's URI syntax, we can filter the event stream to every second event, we can skip the first 2 events after the subscription starts and we will only receive 5 messages.
 
-Or you can now use Reactive Extensions for Javascript
+Or you can now use Reactive Extensions for Javascript which makes it much easier to respond to the different type of events.
 
 ```html
     <script type="text/javascript">
@@ -79,7 +79,7 @@ Or you can now use Reactive Extensions for Javascript
             connection.asObservable().subscribe(
                 function (data) {
                     // onNext
-                    $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
+                    $('#messages').append('<li>' + data + '</li>');
                 },
                 function (error) {
                     // onError
@@ -87,7 +87,6 @@ Or you can now use Reactive Extensions for Javascript
                 },
                 function () {
                     // onCompleted
-                    connection.stop();
                     $('#messages').append('<li>Complete</li>');
                 }
             );
