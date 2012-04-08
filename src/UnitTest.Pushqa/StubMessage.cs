@@ -8,6 +8,7 @@ namespace UnitTest.Pushqa {
         public double DoubleValue { get; set; }
         public DateTime DateTimeValue { get; set; }
         public bool BooleanValue { get; set; }
+        public string StringValue { get; set; }
         public ComplexType ComplexProperty { get; set; }
         
         public class ComplexType {
