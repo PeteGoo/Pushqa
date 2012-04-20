@@ -63,6 +63,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Pushqa.Server.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Linq2Rest">
