@@ -88,7 +88,7 @@ namespace Pushqa.Linq {
         /// <param name="count">The number of items to observe.</param>
         /// <returns></returns>
         public EventFilteredQuerySource<TSource> Take(int count) {
-            return new EventFilteredQuerySource<TSource>(source, filter, 0, count);
+            return new EventFilteredQuerySource<TSource>(source, filter, skip, count);
         }
 
         IObservable<TSource> IEventQuery<TSource>.AsObservable(IEventProviderPipeline eventProviderPipeline) {

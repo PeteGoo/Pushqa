@@ -50,6 +50,16 @@ namespace UnitTest.Pushqa {
             RunOneToTenIntegerTest(s => s.Skip(5), expectedFirst: 6, expectedLast: 10, expectedCount: 5);
         }
 
+        [TestMethod]
+        public void TakeFollowingSkipLimitsResultsReturnedAndIgnoresFirstN() {
+            RunOneToTenIntegerTest(s => s.Take(5).Skip(2), expectedFirst: 3, expectedLast: 7, expectedCount: 5);
+        }
+
+        [TestMethod]
+        public void SkipFollowingTakeLimitsResultsReturnedAndIgnoresFirstN() {
+            RunOneToTenIntegerTest(s => s.Skip(2).Take(5), expectedFirst: 3, expectedLast: 7, expectedCount: 5);
+        }
+
         // *** Decimal Tests ***
         [TestMethod]
         public void IntegerEquals() {
