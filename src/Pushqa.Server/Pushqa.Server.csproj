@@ -66,16 +66,17 @@
     <DocumentationFile>bin\Release\Pushqa.Server.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Linq2Rest">
-      <HintPath>..\..\packages\Linq2Rest.1.1.0.0\lib\Net40\Linq2Rest.dll</HintPath>
+    <Reference Include="Linq2Rest, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Linq2Rest.2.1.0.0\lib\Net40\Linq2Rest.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.0.7.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.4.0.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.4\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SignalR, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SignalR.Server.0.4.0.0\lib\net40\SignalR.dll</HintPath>
@@ -90,6 +91,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Rx-Providers.1.0.11226\lib\Net4\System.Reactive.Providers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -117,6 +119,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\jquery-1.7.2-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.7.2.js" />
+    <Content Include="Scripts\jquery-1.7.2.min.js" />
     <Content Include="Scripts\rx-vsdoc.js" />
     <Content Include="Scripts\rx.min.js" />
     <Content Include="Scripts\Rx.Pushqa.js" />
