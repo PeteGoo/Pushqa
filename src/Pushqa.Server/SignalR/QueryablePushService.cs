@@ -39,8 +39,6 @@ namespace Pushqa.Server.SignalR {
 
         private static ConcurrentDictionary<string, IDisposable> subscriptions = new ConcurrentDictionary<string, IDisposable>();
 
-
-
         /// <summary>
         /// Called when [connected async].
         /// </summary>
@@ -48,7 +46,7 @@ namespace Pushqa.Server.SignalR {
         /// <param name="groups">The groups.</param>
         /// <param name="connectionId">The connection id.</param>
         /// <returns></returns>
-        protected override Task OnConnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId) {
+        protected override Task OnConnectedAsync(IRequest request, string connectionId) {
             return Task.Factory.StartNew(() => {
                 
                 logger.Log(Logger.LogLevel.Debug, "Request URI {0}", request.Url);
@@ -97,7 +95,7 @@ namespace Pushqa.Server.SignalR {
             return qbservable.Subscribe(x => {
 
                 try {
-                    Send(clientId, new EventWrapper<TItemType> { Message = x, Type = EventWrapper<TItemType>.EventType.Message });
+                    Connection.Send(clientId, new EventWrapper<TItemType> { Message = x, Type = EventWrapper<TItemType>.EventType.Message });
                 }
                 catch (Exception exception) {
                     // How should we handle send exceptions like serialization etc? Error the stream of ignore the poison message?
@@ -107,7 +105,7 @@ namespace Pushqa.Server.SignalR {
             ex => {
 
                 try {
-                    Send(clientId, new EventWrapper<TItemType> { ErrorMessage = ex.Message, Type = EventWrapper<TItemType>.EventType.Error });
+                    Connection.Send(clientId, new EventWrapper<TItemType> { ErrorMessage = ex.Message, Type = EventWrapper<TItemType>.EventType.Error });
                 }
                 catch (Exception exception) {
                     // How should we handle send exceptions like serialization etc? Error the stream of ignore the poison message?
@@ -116,7 +114,7 @@ namespace Pushqa.Server.SignalR {
             }
             , () => {
                 try {
-                    Send(clientId, new EventWrapper<TItemType> { Type = EventWrapper<TItemType>.EventType.Completed});
+                    Connection.Send(clientId, new EventWrapper<TItemType> { Type = EventWrapper<TItemType>.EventType.Completed});
                 }
                 catch (Exception exception) {
                     logger.Log(Logger.LogLevel.Error, exception, "Error sending complete message");

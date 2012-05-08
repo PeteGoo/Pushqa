@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Routing;
 using Pushqa.Server.SignalR;
+using SignalR;
 using SignalR.Hosting.AspNet.Routing;
 using System.Web.Mvc;
 
