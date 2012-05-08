@@ -7,6 +7,8 @@ It allows the consumer to define queries over event streams so that events that 
 
 Pushqa uses Microsoft's Reactive Extensions (Rx) expressions over an HTTP connection with the queries serialized using the oData URI specification. The current transport pipeline supported is SignalR though more pipelines may be added in the future. By default, messages are serialized using JSON. The message service is hosted in an ASP.Net Web project running in IIS.
 
+[Click Here](http://petegoo.github.com/Pushqa "Pushqa") For a video showing how to build a Pushqa sample project 
+
 ##Implementing a queryable event stream
 Server side implementation is easy, we only need to define our server context class with one or more event stream properties in terms of an Rx IQbservable.
 
