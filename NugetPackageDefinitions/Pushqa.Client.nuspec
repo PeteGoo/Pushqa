@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>0.1.2</version>
+    <authors>Peter Goodman</authors>
+    <owners>Peter Goodman</owners>
+    <licenseUrl>https://github.com/PeteGoo/Pushqa/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>http://petegoo.github.com/Pushqa/</projectUrl>
+    <dependencies>
+      <dependency id="Rx-Main" version="1.0.11226" />
+      <dependency id="SignalR.Client" version="0.5.84-rc" />
+      <dependency id="Newtonsoft.Json" version="4.5.5" />
+    </dependencies>
+    <id>Pushqa.Client</id>
+    <title>Pushqa.Client</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The .Net Client component for Pushqa - providing Linq queryable event streams over HTTP using Reactive Extensions, OData and SignalR.</description>
+    <summary>Pushqa provides a queryable Pub/Sub model where Linq and OData queries can be remoted to filter HTTP server event streams before they leave the server.</summary>
+    <releaseNotes>- Fixed issue with sequencing of Take and Skip resulting in ignored skip</releaseNotes>
+    <copyright>Peter Goodman 2012</copyright>
+    <language>en-US</language>
+    <tags>Rx, OData, SignalR, Push, Messaging</tags>
+  </metadata>
+  <files>
+    <file src="..\src\Pushqa\bin\Release\Pushqa.dll" target="lib\net40\Pushqa.dll" />
+    <file src="..\src\Pushqa\bin\Release\Pushqa.XML" target="lib\net40\Pushqa.XML" />
+  </files>
+</package>

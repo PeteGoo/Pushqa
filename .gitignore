@@ -19,3 +19,4 @@ artifacts/*
 msbuild.log
 PublishProfiles/
 *.psess
+*.nupkg
