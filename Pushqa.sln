@@ -1,10 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pushqa", "src\Pushqa\Pushqa.csproj", "{0B90BCEA-122F-4E8B-AC05-0A3A122AAD26}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "src\Sample.Web\Sample.Web.csproj", "{63005CFC-090D-4319-9ABF-DCC23F095378}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{639C4827-2B95-48D2-A416-A44EE16073BA}"
 	ProjectSection(SolutionItems) = preProject
 		src\Common\CommonAssemblyInfo.cs = src\Common\CommonAssemblyInfo.cs
@@ -13,6 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24122F36-64C6-4013-8258-1F833DF57027}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pushqa", "src\Pushqa\Pushqa.csproj", "{0B90BCEA-122F-4E8B-AC05-0A3A122AAD26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "src\Sample.Web\Sample.Web.csproj", "{63005CFC-090D-4319-9ABF-DCC23F095378}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.Pushqa", "src\UnitTest.Pushqa\UnitTest.Pushqa.csproj", "{AB33955C-02EE-4099-ABF8-69E6F991E80B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WPFClient", "src\Sample.WPFClient\Sample.WPFClient.csproj", "{828474E0-6D5D-457C-93A2-49AE29F99BDA}"
@@ -20,13 +27,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pushqa.Server", "src\Pushqa.Server\Pushqa.Server.csproj", "{F63193FA-1190-49F2-9E0F-0C40521FD34A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Common", "src\Sample.Common\Sample.Common.csproj", "{DEB0043D-A0CC-4E51-AB5A-26811E353A95}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24122F36-64C6-4013-8258-1F833DF57027}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

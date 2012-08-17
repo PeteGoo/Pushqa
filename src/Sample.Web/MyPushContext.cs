@@ -52,8 +52,8 @@ namespace Sample.Web {
         public IQbservable<Stock> Stocks {
             get {
                 if(stocks == null) {
-                    
-                    stocks = (from line in new StreamReader(typeof(MyPushContext).Assembly.GetManifestResourceStream("Sample.Web.AMZN_AAPL_GOOG_MSFT.txt")).ReadToEnd().Split(new string[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+
+                    stocks = (from line in new StreamReader(typeof(MyPushContext).Assembly.GetManifestResourceStream("Sample.Web.AMZN_AAPL_GOOG_MSFT.txt")).ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                              let parts = line.Split(',')
                              select new Stock {
                                  Date = DateTime.ParseExact(parts.First(), "yyyyMMdd", CultureInfo.InvariantCulture).Date,
