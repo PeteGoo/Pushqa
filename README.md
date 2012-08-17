@@ -163,4 +163,4 @@ AsObservable() created our client side observable event stream and allows us to 
 
 Complete is called when the server event stream has ended e.g. when the "Take" count is met.
 
-&copy;Peter Goodman
+&copy;Peter Goodman 
