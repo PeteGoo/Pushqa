@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Pushqa Samples: Queryable SignalR Persistent Connection";
+}
+
+<h2>Pushqa Samples: Queryable SignalR Persistent Connection</h2>
+
+<div>@Html.ActionLink("Samples Home", "Index")</div>
+
+<p>This sample is basically a simple SignalR page that broadcasts input messages bu only subscribes to those messages that do not contain the substring "pie".</p>
+<p>Uri: http://myserver/myapp/chat/?$filter=substringof('pie', Message) eq false</p>
+
+<div>
+    <script type="text/javascript">
+        $(function () {
+            // Setup our connection
+            var connection = $.connection('../chat/', { $filter: "substringof('pie', Message) eq false" });
+            
+            // Append each message received
+            connection.received(function (data) {
+                $('#messages').append('<li>' + data + '</li>');
+            });
+
+            connection.starting(function () {
+                $('#messages').append("'<li>Starting Connection</li>");
+            });
+
+            connection.start();
+
+            $("#broadcast").click(function() {
+                connection.send($('#msg').val());
+            });
+        });
+
+    </script>
+      <input type="text" id="msg" />
+      <input type="button" id="broadcast" value="broadcast" />
+
+      <ul id="messages">
+  </ul>
+</div>

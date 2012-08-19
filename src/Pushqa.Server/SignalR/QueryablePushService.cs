@@ -43,7 +43,6 @@ namespace Pushqa.Server.SignalR {
         /// Called when [connected async].
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <param name="groups">The groups.</param>
         /// <param name="connectionId">The connection id.</param>
         /// <returns></returns>
         protected override Task OnConnectedAsync(IRequest request, string connectionId) {

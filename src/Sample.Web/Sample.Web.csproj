@@ -60,15 +60,15 @@
     </Reference>
     <Reference Include="SignalR, Version=0.5.1.10625, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SignalR.Server.0.5.2\lib\net40\SignalR.dll</HintPath>
+      <HintPath>..\..\..\SignalR\git\SignalR\SignalR\bin\Debug\SignalR.dll</HintPath>
     </Reference>
     <Reference Include="SignalR.Hosting.AspNet, Version=0.5.2.10625, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SignalR.Hosting.AspNet.0.5.2\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
+      <HintPath>..\..\..\SignalR\git\SignalR\SignalR.Hosting.AspNet\bin\Debug\SignalR.Hosting.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="SignalR.Hosting.Common, Version=0.5.1.10625, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SignalR.Hosting.Common.0.5.2\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+      <HintPath>..\..\..\SignalR\git\SignalR\SignalR.Hosting.Common\bin\Debug\SignalR.Hosting.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Activities" />
     <Reference Include="System.Data.Entity" />
@@ -274,6 +274,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\StockTicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\FilteredChat.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

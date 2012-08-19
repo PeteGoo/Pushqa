@@ -12,6 +12,7 @@ namespace Sample.Web {
         protected void Application_Start(object sender, EventArgs e) {
             // Register the SignalR route for our event context at /events
             RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
+            RouteTable.Routes.MapConnection<MyQueryablePersistentConnection>("chat", "chat/{*operation}");
 
             AreaRegistration.RegisterAllAreas();
             
@@ -60,5 +61,12 @@ namespace Sample.Web {
         protected void Application_End(object sender, EventArgs e) {
 
         }
+    }
+
+    public class MyQueryablePersistentConnection : QueryablePersistentConnection {
+        protected override System.Threading.Tasks.Task OnReceivedAsync(IRequest request, string connectionId, string data) {
+            return Connection.Broadcast(data);
+        }
+        
     }
 }

@@ -27,5 +27,9 @@ namespace Sample.Web.Controllers
         public ActionResult StockTicker() {
             return View();
         }
+
+        public ActionResult FilteredChat() {
+            return View();
+        }
     }
 }
