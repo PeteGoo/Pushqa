@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Linq2Rest.Parser;
@@ -14,7 +16,7 @@ namespace Pushqa.Server.SignalR {
     /// </summary>
     public abstract class QueryablePersistentConnection : PersistentConnection {
 
-        private Func<MessageContainer, bool> filter;
+        private string filterString;
         
 
 
@@ -26,15 +28,12 @@ namespace Pushqa.Server.SignalR {
         /// A <see cref="T:System.Threading.Tasks.Task"/> that completes when the connect operation is complete.
         /// </returns>
         protected override System.Threading.Tasks.Task OnConnectedAsync(IRequest request, string connectionId) {
-            string filterString = request.QueryString.Get("$filter");
-            if(!string.IsNullOrWhiteSpace(filterString)) {
-                FilterExpressionFactory filterExpressionFactory = new FilterExpressionFactory();
-                Expression<Func<MessageContainer, bool>> expression = filterExpressionFactory.Create<MessageContainer>(filterString);
-                filter = expression.Compile();
-                if(Connection != null && Connection is FilteredConnection) {
-                    (Connection as FilteredConnection).Filter = filter;
-                }
+            filterString = request.QueryString.Get("$filter");
+
+            if(Connection != null && Connection is FilteredConnection) {
+                (Connection as FilteredConnection).FilterString = filterString;
             }
+
             return base.OnConnectedAsync(request, connectionId);
         }
 
@@ -48,7 +47,7 @@ namespace Pushqa.Server.SignalR {
         /// <param name="request"></param>
         /// <returns></returns>
         protected override global::SignalR.Connection CreateConnection(string connectionId, System.Collections.Generic.IEnumerable<string> groups, IRequest request) {
-            return new FilteredConnection(filter, _messageBus,
+            return new FilteredConnection(filterString, _messageBus,
                                   _jsonSerializer,
                                   DefaultSignal,
                                   connectionId,
@@ -57,29 +56,72 @@ namespace Pushqa.Server.SignalR {
                                   _trace);
         }
 
-        internal class MessageContainer {
-            public string Message { get; set; }
+        internal class MessageContainer<T> {
+            public MessageContainer(T message) {
+                Message = message;
+            }
+            public T Message { get; private set; }
         }
+         
 
         internal class FilteredConnection : Connection {
-            private Func<MessageContainer, bool> filter;
+            private string filterString;
+            private ConcurrentDictionary<Type,Func<object, bool>> typedFilters = new ConcurrentDictionary<Type, Func<object, bool>>();
 
+            static FilteredConnection() {
+                createFilterGenericMethodDefn =
+                    new Func<string, Func<object, bool>>(CreateFilter<MessageContainer<int>>).Method.GetGenericMethodDefinition();
+            }
 
-            public FilteredConnection(Func<MessageContainer, bool> filter, IMessageBus messageBus, IJsonSerializer jsonSerializer, string baseSignal, string connectionId, IEnumerable<string> signals, IEnumerable<string> groups, ITraceManager traceManager) : base(messageBus, jsonSerializer, baseSignal, connectionId, signals, groups, traceManager) {
-                this.Filter = filter;
+            public FilteredConnection(string filterString, IMessageBus messageBus, IJsonSerializer jsonSerializer, string baseSignal, string connectionId, IEnumerable<string> signals, IEnumerable<string> groups, ITraceManager traceManager) : base(messageBus, jsonSerializer, baseSignal, connectionId, signals, groups, traceManager) {
+                this.filterString = filterString;
             }
 
             /// <summary>
             /// The filter to apply to messages
             /// </summary>
-            public Func<MessageContainer, bool> Filter {
-                get { return filter; }
-                set { filter = value; }
+            public string FilterString {
+                get { return filterString; }
+                set { 
+                    if(filterString == value) {
+                        return;
+                    }
+                    filterString = value;
+                    typedFilters.Clear();
+                }
             }
 
-
             protected override List<object> ProcessResults(IList<Message> source) {
-                return base.ProcessResults(source).Where(m => !(m is string) || Filter == null || Filter(new MessageContainer { Message = m.ToString()}) ).ToList();
+                // override the default message processing to filter based on our query
+                List<object> processedResults = base.ProcessResults(source);
+                
+                return processedResults.Where(m => GetFilter(m.GetType())(m) ).ToList();
+            }
+
+            private Func<object, bool> GetFilter(Type messageType) {
+                return typedFilters.GetOrAdd(messageType, type => createFilterGenericMethodDefn.MakeGenericMethod(new Type[] { messageType }).Invoke(null, new object[] { FilterString }) as Func<object, bool>);
+            }
+
+            private static readonly MethodInfo createFilterGenericMethodDefn;
+
+            private static Func<object, bool> CreateFilter<T>(string filterString)  {
+                Func<MessageContainer<T>, bool> filter;
+                if (!string.IsNullOrWhiteSpace(filterString)) {
+                    try {
+                        // Construct the filter expression
+                        FilterExpressionFactory filterExpressionFactory = new FilterExpressionFactory();
+                        Expression<Func<MessageContainer<T>, bool>> expression = filterExpressionFactory.Create<MessageContainer<T>>(filterString);
+                        filter = expression.Compile();
+                    } catch (Exception) {
+                        // Could not create a valid expression for this type
+                        filter = arg => true;
+                    }
+                }
+                else {
+                    // No filter was given
+                    filter = arg => true;
+                }
+                return new Func<object, bool>(message => !(message is T) || filter(new MessageContainer<T>((T)message)));
             }
         }
     }
