@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -8,8 +7,6 @@ using System.Threading.Tasks;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
 using SignalR;
-using SignalR.Hosting;
-
 
 namespace Pushqa.Server.SignalR {
     /// <summary>
@@ -17,8 +14,7 @@ namespace Pushqa.Server.SignalR {
     /// </summary>
     public class QueryablePushService<T> : PersistentConnection where T : new() {
         private static readonly Logger logger = new Logger();
-        private readonly IMessageSerializer messageSerializer;
-        private T context;
+        private readonly T context;
         private UriQueryDeserializer queryDeserializer = new UriQueryDeserializer();
 
         /// <summary>
@@ -26,14 +22,12 @@ namespace Pushqa.Server.SignalR {
         /// </summary>
         public QueryablePushService() : this(new JsonMessageSerializer()) {}
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryablePushService&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="messageSerializer">The message serializer to use. The default is the <see cref="JsonMessageSerializer"/></param>
         public QueryablePushService(IMessageSerializer messageSerializer) {
             VerifyArgument.IsNotNull("messageSerializer", messageSerializer);
-            this.messageSerializer = messageSerializer;
             context = new T();
         }
 
