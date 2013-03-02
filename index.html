@@ -18,10 +18,9 @@
 
   </head>
   <body>
-
       <div id="header">
         <nav>
-          <li class="fork"><a href="https://github.com/PeteGoo/Pushqa">Fork On GitHub</a></li>
+          <li class="fork"><a href="https://github.com/PeteGoo/Pushqa">View On GitHub</a></li>
           <li class="downloads"><a href="https://github.com/PeteGoo/Pushqa/zipball/master">ZIP</a></li>
           <li class="downloads"><a href="https://github.com/PeteGoo/Pushqa/tarball/master">TAR</a></li>
           <li class="title">DOWNLOADS</li>
@@ -51,9 +50,9 @@
 
 <h2>Get it on NuGet</h2>
 
-<p>Pushqa is now available on <a href="http://nuget.org/packages?q=pushqa" target="_blank">NuGet</a>.</p>
+<p>Pushqa is now available on <a href="http://nuget.org/packages?q=pushqa">Nuget</a></p>
 
-<iframe src="http://player.vimeo.com/video/40514930" width="600" height="420" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><p><a href="http://vimeo.com/40514930">Pushqa Introduction Demo</a> from <a href="http://vimeo.com/user3050044">Peter Goodman</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+<p></p><p><a href="http://vimeo.com/40514930">Pushqa Introduction Demo</a> from <a href="http://vimeo.com/user3050044">Peter Goodman</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
 
 <h2>Implementing a queryable event stream</h2>
 
@@ -61,16 +60,12 @@
 
 <p>First though, lets create an ASP.Net Web Application and add the following code to the Application_Start of the Global.asax file so that incoming requests to the 'events' path of our app gets redirected to Pushqa.</p>
 
-<div class="highlight">
-<pre>    <span class="n">RouteTable</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapConnection</span><span class="p">&lt;</span><span class="n">QueryablePushService</span><span class="p">&lt;</span><span class="n">MyPushContext</span><span class="p">&gt;&gt;(</span><span class="s">"events"</span><span class="p">,</span> <span class="s">"events/{*operation}"</span><span class="p">);</span>
-</pre>
-</div>
-
+<div class="highlight"><pre>    <span class="n">RouteTable</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapConnection</span><span class="p">&lt;</span><span class="n">QueryablePushService</span><span class="p">&lt;</span><span class="n">MyPushContext</span><span class="p">&gt;&gt;(</span><span class="s">"events"</span><span class="p">,</span> <span class="s">"events"</span><span class="p">);</span>
+</pre></div>
 
 <p>Now add the push context class that exposes the observable Rx event stream. </p>
 
-<div class="highlight">
-<pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyPushContext</span> <span class="p">{</span>
+<div class="highlight"><pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyPushContext</span> <span class="p">{</span>
         <span class="k">public</span> <span class="n">IQbservable</span><span class="p">&lt;</span><span class="n">MyMessage</span><span class="p">&gt;</span> <span class="n">OneSecondTimer</span> <span class="p">{</span>
             <span class="k">get</span> <span class="p">{</span> 
                 <span class="k">return</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Interval</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">1</span><span class="p">))</span>
@@ -84,9 +79,7 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p>Notice that the above Rx event stream is simply a 1 second timer projected into our custom message class. For more ways to easily create Rx event streams (e.g. from standard events) see the examples <a href="http://rxwiki.wikidot.com/101samples#toc5" title="Rx 101 Samples">here</a>.</p>
 
@@ -94,10 +87,19 @@
 
 <p>The above event stream will be exposed over SignalR so a javascript can use the standard SignalR API to listen to events.</p>
 
-<div class="highlight">
-<pre>    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+<div class="highlight"><pre>    <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"connect"</span> <span class="na">value=</span><span class="s">"Connect"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"disconnect"</span> <span class="na">value=</span><span class="s">"Disconnect"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery-1.9.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery-ui-1.9.2.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery.signalR-1.0.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">connection</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">connection</span><span class="p">(</span><span class="s1">'../events/OneSecondTimer'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">$filter</span><span class="o">:</span> <span class="s2">"(MessageId mod 2) eq 0"</span><span class="p">,</span> <span class="nx">$skip</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">$top</span><span class="o">:</span> <span class="mi">5</span> <span class="p">});</span>
+            <span class="kd">var</span> <span class="nx">connection</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">connection</span><span class="p">(</span><span class="s1">'../events/OneSecondTimer/'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">$filter</span><span class="o">:</span> <span class="s2">"(MessageId mod 2) eq 0"</span><span class="p">,</span> <span class="nx">$skip</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">$top</span><span class="o">:</span> <span class="mi">5</span> <span class="p">});</span>
 
             <span class="nx">connection</span><span class="p">.</span><span class="nx">received</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">Type</span> <span class="o">==</span> <span class="s1">'Completed'</span><span class="p">)</span> <span class="p">{</span>
@@ -105,7 +107,7 @@
                     <span class="nx">$</span><span class="p">(</span><span class="s1">'#messages'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;li&gt;Complete&lt;/li&gt;'</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">$</span><span class="p">(</span><span class="s1">'#messages'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;li&gt;'</span> <span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">Message</span> <span class="o">+</span> <span class="s1">'&lt;/li&gt;'</span><span class="p">);</span>
+                    <span class="nx">$</span><span class="p">(</span><span class="s1">'#messages'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;li&gt;'</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">Message</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'&lt;/li&gt;'</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">});</span>
 
@@ -120,28 +122,32 @@
             <span class="p">});</span>
         <span class="p">});</span>
     <span class="nt">&lt;/script&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"connect"</span> <span class="na">value=</span><span class="s">"Connect"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"disconnect"</span> <span class="na">value=</span><span class="s">"Disconnect"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p>Notice that, because Pushqa uses oData's URI syntax, we can filter the event stream to every second event, we can skip the first 2 events after the subscription starts and we will only receive 5 messages.</p>
 
 <p>Or you can now use Reactive Extensions for Javascript which makes it much easier to respond to the different type of events.</p>
 
-<div class="highlight">
-<pre>    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+<div class="highlight"><pre>    <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"connect"</span> <span class="na">value=</span><span class="s">"Connect"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"disconnect"</span> <span class="na">value=</span><span class="s">"Disconnect"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery-1.9.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery-ui-1.9.2.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/jquery.signalR-1.0.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/rx.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~/Scripts/Rx.Pushqa.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
         <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-            <span class="c1">// Setup our connection</span>
             <span class="kd">var</span> <span class="nx">connection</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">connection</span><span class="p">(</span><span class="s1">'../events/OneSecondTimer/'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">$filter</span><span class="o">:</span> <span class="s2">"(MessageId mod 2) eq 0"</span><span class="p">,</span> <span class="nx">$skip</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">$top</span><span class="o">:</span> <span class="mi">5</span> <span class="p">});</span>
 
             <span class="c1">// Append each message received</span>
             <span class="nx">connection</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span>
                 <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
                     <span class="c1">// onNext</span>
-                    <span class="nx">$</span><span class="p">(</span><span class="s1">'#messages'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;li&gt;'</span> <span class="o">+</span> <span class="nx">data</span> <span class="o">+</span> <span class="s1">'&lt;/li&gt;'</span><span class="p">);</span>
+                    <span class="nx">$</span><span class="p">(</span><span class="s1">'#messages'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;li&gt;'</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'&lt;/li&gt;'</span><span class="p">);</span>
                 <span class="p">},</span>
                 <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
                     <span class="c1">// onError</span>
@@ -163,35 +169,25 @@
                 <span class="nx">connection</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
             <span class="p">});</span>
         <span class="p">});</span>
-
     <span class="nt">&lt;/script&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"connect"</span> <span class="na">value=</span><span class="s">"Connect"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"disconnect"</span> <span class="na">value=</span><span class="s">"Disconnect"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
-</pre>
-</div>
-
+</pre></div>
 
 <h2>Consuming using the Client Linq API</h2>
 
 <p>Pushqa includes a linq provider to allow the event stream to be filtered using LINQ. Firstly we need to implement our client side EventProvider class.</p>
 
-<div class="highlight">
-<pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyPushEventProvider</span> <span class="p">:</span> <span class="n">EventProvider</span> <span class="p">{</span>
+<div class="highlight"><pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MyPushEventProvider</span> <span class="p">:</span> <span class="n">EventProvider</span> <span class="p">{</span>
         <span class="k">public</span> <span class="nf">MyPushEventProvider</span><span class="p">()</span> <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">"http://localhost/Sample.Web/events"</span><span class="p">))</span> <span class="p">{</span> <span class="p">}</span>
 
         <span class="k">public</span> <span class="n">EventQuerySource</span><span class="p">&lt;</span><span class="n">MyMessage</span><span class="p">&gt;</span> <span class="n">OneSecondTimer</span> <span class="p">{</span>
             <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">CreateQuery</span><span class="p">&lt;</span><span class="n">MyMessage</span><span class="p">&gt;(</span><span class="s">"OneSecondTimer"</span><span class="p">);</span> <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p>Then we simply use the EventQuerySource property to construct our query and subscribe.</p>
 
-<div class="highlight">
-<pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MainWindowViewModel</span> <span class="p">{</span>
+<div class="highlight"><pre>    <span class="k">public</span> <span class="k">class</span> <span class="nc">MainWindowViewModel</span> <span class="p">{</span>
 
         <span class="k">public</span> <span class="nf">MainWindowViewModel</span><span class="p">()</span> <span class="p">{</span>
             <span class="c1">// Setup the event stream subscription</span>
@@ -214,9 +210,7 @@
             <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">messages</span><span class="p">;</span> <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p>Notice how the standard LINQ query syntax works for filtering while Take and Skip are also implemented. </p>
 
@@ -228,6 +222,17 @@
       </section>
 
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30675784-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
