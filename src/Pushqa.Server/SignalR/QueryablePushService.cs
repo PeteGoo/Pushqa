@@ -124,6 +124,9 @@ namespace Pushqa.Server.SignalR {
         protected override Task OnDisconnected(IRequest request, string connectionId) {
             IDisposable success;
             subscriptions.TryRemove(connectionId, out success);
+            if (success != null) {
+                success.Dispose();
+            }
             logger.Log(Logger.LogLevel.Debug, string.Format("Client {0} has disconnected from server. Number of remaining connected clients {1}", connectionId, subscriptions.Count));
             return base.OnDisconnected(request, connectionId);
         }
