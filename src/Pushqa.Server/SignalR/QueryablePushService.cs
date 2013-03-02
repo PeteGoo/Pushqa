@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
-using SignalR;
+using Microsoft.AspNet.SignalR;
 
 namespace Pushqa.Server.SignalR {
     /// <summary>
@@ -39,7 +39,7 @@ namespace Pushqa.Server.SignalR {
         /// <param name="request">The request.</param>
         /// <param name="connectionId">The connection id.</param>
         /// <returns></returns>
-        protected override Task OnConnectedAsync(IRequest request, string connectionId) {
+        protected override Task OnConnected(IRequest request, string connectionId) {
             return Task.Factory.StartNew(() => {
                 
                 logger.Log(Logger.LogLevel.Debug, "Request URI {0}", request.Url);
@@ -116,25 +116,16 @@ namespace Pushqa.Server.SignalR {
         }
 
         /// <summary>
-        /// Called when [disconnect async].
+        /// Called when disconnected
         /// </summary>
-        /// <param name="clientId">The client id.</param>
+        /// <param name="request">The request</param>
+        /// <param name="connectionId">The client id.</param>
         /// <returns></returns>
-        protected override Task OnDisconnectAsync(string clientId) {
+        protected override Task OnDisconnected(IRequest request, string connectionId) {
             IDisposable success;
-            subscriptions.TryRemove(clientId, out success);
-            logger.Log(Logger.LogLevel.Debug, string.Format("Client {0} has disconnected from server. Number of remaining connected clients {1}", clientId, subscriptions.Count));
-            return base.OnDisconnectAsync(clientId);
-        }
-
-        /// <summary>
-        /// Called when [error async].
-        /// </summary>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        protected override Task OnErrorAsync(Exception e) {
-            logger.Log(Logger.LogLevel.Error, e, "An error occured server side");
-            return base.OnErrorAsync(e);
+            subscriptions.TryRemove(connectionId, out success);
+            logger.Log(Logger.LogLevel.Debug, string.Format("Client {0} has disconnected from server. Number of remaining connected clients {1}", connectionId, subscriptions.Count));
+            return base.OnDisconnected(request, connectionId);
         }
     }
 }

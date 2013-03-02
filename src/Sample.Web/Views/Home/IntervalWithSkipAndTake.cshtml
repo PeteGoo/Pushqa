@@ -13,7 +13,7 @@
     <script type="text/javascript">
         $(function () {
             // Setup our connection
-            var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            var connection = $.connection('../events/OneSecondTimer', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
             
             // Append each message received
             connection.asObservable().subscribe(

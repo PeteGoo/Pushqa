@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.Routing;
 using Pushqa.Server.SignalR;
-using SignalR;
-using SignalR.Hosting.AspNet.Routing;
 using System.Web.Mvc;
 
 
@@ -11,7 +9,7 @@ namespace Sample.Web {
 
         protected void Application_Start(object sender, EventArgs e) {
             // Register the SignalR route for our event context at /events
-            RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
+            RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events");
 
             AreaRegistration.RegisterAllAreas();
             
@@ -34,7 +32,6 @@ namespace Sample.Web {
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-
         }
 
         protected void Session_Start(object sender, EventArgs e) {

@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
 using Pushqa.Linq;
-using SignalR.Client;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace Pushqa.SignalR {
     /// <summary>
