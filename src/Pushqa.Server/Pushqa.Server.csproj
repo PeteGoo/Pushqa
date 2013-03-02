@@ -66,9 +66,9 @@
     <DocumentationFile>bin\Release\Pushqa.Server.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Linq2Rest, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Linq2Rest, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Linq2Rest.2.4.1.0\lib\Net40\Linq2Rest.dll</HintPath>
+      <HintPath>..\..\packages\Linq2Rest.2.5.0.0\lib\Net40\Linq2Rest.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
       <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.1.0.1\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
