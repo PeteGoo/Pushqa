@@ -15,7 +15,7 @@ Server side implementation is easy, we only need to define our server context cl
 First though, lets create an ASP.Net Web Application and add the following code to the Application_Start of the Global.asax file so that incoming requests to the 'events' path of our app gets redirected to Pushqa.
 
 ```c#
-    RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events/{*operation}");
+    RouteTable.Routes.MapConnection<QueryablePushService<MyPushContext>>("events", "events");
 ```
 
 Now add the push context class that exposes the observable Rx event stream. 
@@ -43,6 +43,16 @@ Notice that the above Rx event stream is simply a 1 second timer projected into 
 The above event stream will be exposed over SignalR so a javascript can use the standard SignalR API to listen to events.
 
 ```html
+    <div>
+        <input type="button" id="connect" value="Connect" />
+        <input type="button" id="disconnect" value="Disconnect" />
+        <ul id="messages"></ul>
+    </div>
+
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.9.2.js"></script>
+    <script src="~/Scripts/jquery.signalR-1.0.1.js"></script>
+
     <script type="text/javascript">
         $(function () {
             var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
@@ -53,7 +63,7 @@ The above event stream will be exposed over SignalR so a javascript can use the 
                     $('#messages').append('<li>Complete</li>');
                 }
                 else {
-                    $('#messages').append('<li>' + data.Message + '</li>');
+                    $('#messages').append('<li>' + JSON.stringify(data.Message) + '</li>');
                 }
             });
 
@@ -68,9 +78,6 @@ The above event stream will be exposed over SignalR so a javascript can use the 
             });
         });
     </script>
-    <input type="button" id="connect" value="Connect" />
-    <input type="button" id="disconnect" value="Disconnect" />
-    <ul id="messages"></ul>
 ```
 
 Notice that, because Pushqa uses oData's URI syntax, we can filter the event stream to every second event, we can skip the first 2 events after the subscription starts and we will only receive 5 messages.
@@ -78,16 +85,26 @@ Notice that, because Pushqa uses oData's URI syntax, we can filter the event str
 Or you can now use Reactive Extensions for Javascript which makes it much easier to respond to the different type of events.
 
 ```html
+    <div>
+        <input type="button" id="connect" value="Connect" />
+        <input type="button" id="disconnect" value="Disconnect" />
+        <ul id="messages"></ul>
+    </div>
+
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.9.2.js"></script>
+    <script src="~/Scripts/jquery.signalR-1.0.1.js"></script>
+    <script src="~/Scripts/rx.min.js"></script>
+    <script src="~/Scripts/Rx.Pushqa.js"></script>
     <script type="text/javascript">
         $(function () {
-            // Setup our connection
             var connection = $.connection('../events/OneSecondTimer/', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
-            
+
             // Append each message received
             connection.asObservable().subscribe(
                 function (data) {
                     // onNext
-                    $('#messages').append('<li>' + data + '</li>');
+                    $('#messages').append('<li>' + JSON.stringify(data) + '</li>');
                 },
                 function (error) {
                     // onError
@@ -109,11 +126,7 @@ Or you can now use Reactive Extensions for Javascript which makes it much easier
                 connection.stop();
             });
         });
-
     </script>
-    <input type="button" id="connect" value="Connect" />
-    <input type="button" id="disconnect" value="Disconnect" />
-    <ul id="messages"></ul>
 ```
 
 ##Consuming using the Client Linq API
