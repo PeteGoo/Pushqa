@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Pushqa.Client</id>
-        <version>0.3</version>
+        <version>0.3.1</version>
         <title>Pushqa.Client</title>
         <authors>Peter Goodman</authors>
         <owners>Peter Goodman</owners>
