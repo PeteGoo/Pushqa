@@ -39,9 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Linq2Rest, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Linq2Rest, Version=3.2.1.0, Culture=neutral, PublicKeyToken=73a6c4cf8c87a30e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Linq2Rest.2.5.0.0\lib\Net40\Linq2Rest.dll</HintPath>
+      <HintPath>..\..\packages\Linq2Rest.3.2.1.0\lib\Net40\Linq2Rest.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
