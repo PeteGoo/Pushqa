@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reactive.Subjects;
 
-namespace Sample.Web.Tracing {
+namespace Sample.Common.Tracing {
     public class ObservableTraceListener : TraceListener {
         private static readonly Subject<TraceMessage> traceMessages = new Subject<TraceMessage>();
 

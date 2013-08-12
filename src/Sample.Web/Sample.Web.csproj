@@ -124,7 +124,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AMZN_AAPL_GOOG_MSFT.txt" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -235,7 +234,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MyPushContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -245,7 +243,6 @@
     <Compile Include="SampleDataService.svc.cs">
       <DependentUpon>SampleDataService.svc</DependentUpon>
     </Compile>
-    <Compile Include="Tracing\ObservableTraceListener.cs" />
     <Compile Include="Workflow\ObservableTrackingParticipant.cs" />
     <Compile Include="Workflow\ProgressExtension.cs" />
   </ItemGroup>

@@ -8,10 +8,10 @@ using System.Management;
 using System.Reactive.Linq;
 using System.Web;
 using Sample.Common;
-using Sample.Web.Tracing;
+using Sample.Common.Tracing;
 using ProcessInfo = Sample.Common.ProcessInfo;
 
-namespace Sample.Web {
+namespace Sample.Common {
     public class MyPushContext {
         /// <summary>
         /// Gets a one second timer that produces a new message each second with an incrementing id and timestamp.
@@ -53,7 +53,7 @@ namespace Sample.Web {
             get {
                 if(stocks == null) {
 
-                    stocks = (from line in new StreamReader(typeof(MyPushContext).Assembly.GetManifestResourceStream("Sample.Web.AMZN_AAPL_GOOG_MSFT.txt")).ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                    stocks = (from line in new StreamReader(typeof(MyPushContext).Assembly.GetManifestResourceStream("Sample.Common.AMZN_AAPL_GOOG_MSFT.txt")).ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                              let parts = line.Split(',')
                              select new Stock {
                                  Date = DateTime.ParseExact(parts.First(), "yyyyMMdd", CultureInfo.InvariantCulture).Date,

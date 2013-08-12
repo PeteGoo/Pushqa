@@ -2,6 +2,7 @@
 using System.Web.Routing;
 using Pushqa.Server.SignalR;
 using System.Web.Mvc;
+using Sample.Common;
 
 
 namespace Sample.Web {
